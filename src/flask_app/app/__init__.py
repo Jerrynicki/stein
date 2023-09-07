@@ -14,8 +14,6 @@ def create_app():
     # app.config.from_object(cfg.get_flask_config())
     app.config.from_file(CONFIG_LOCATION, load=json.load)
 
-    print(app.config)
-
     db.init_app(app)
 
     from app.main import bp as main_bp

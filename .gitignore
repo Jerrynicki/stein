@@ -5,3 +5,5 @@ bin/
 include/
 pyvenv.cfg
 __pycache__/
+.vscode/
+var/
