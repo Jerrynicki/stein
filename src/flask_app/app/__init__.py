@@ -1,0 +1,31 @@
+import flask
+import os
+import json
+
+from app.extensions import db
+
+CONFIG_LOCATION = os.path.abspath(os.path.dirname(__file__)) + "/stein.json"
+
+def create_app():
+    """App constructor"""
+
+    app = flask.Flask(__name__)
+
+    # app.config.from_object(cfg.get_flask_config())
+    app.config.from_file(CONFIG_LOCATION, load=json.load)
+
+    print(app.config)
+
+    db.init_app(app)
+
+    from app.main import bp as main_bp
+    app.register_blueprint(main_bp)
+
+    @app.route("/test/")
+    def test():
+        return "<h1>test</h1>"
+
+    with app.app_context():
+        db.create_all()
+
+    return app
