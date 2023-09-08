@@ -35,4 +35,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 ---
 
 # **Stein:**
-![funny stone picture]("\root\frontend\stein_app\src\assets\funny_stone.jpg")
+![funny stone picture](./root/frontend/stein_app/src/assets/funny_stone.jpg)
