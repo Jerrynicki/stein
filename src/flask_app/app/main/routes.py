@@ -4,6 +4,7 @@ from app.main import bp
 import app.models as models
 from app.extensions import db
 
+
 @bp.route("/")
 def index():
     # users = user.User.query.all()

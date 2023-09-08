@@ -19,10 +19,6 @@ def create_app():
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-    @app.route("/test/")
-    def test():
-        return "<h1>test</h1>"
-
     with app.app_context():
         db.create_all()
 
