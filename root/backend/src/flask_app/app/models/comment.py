@@ -7,5 +7,7 @@ class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     author = db.Column(db.ForeignKey("user.name"))
     comment = db.Column(db.Unicode(length=3))
+    location_lat = db.Column(db.Float) # latitude N
+    location_lon = db.Column(db.Float) # longitude E
     rating = db.Column(db.Integer)
     removed = db.Column(db.Boolean)
