@@ -7,3 +7,4 @@ pyvenv.cfg
 __pycache__/
 .vscode/
 var/
+instance/

@@ -29,7 +29,6 @@ def index():
     db.session.add(p)
     db.session.flush()
 
-
     print(p.id)
 
     c = models.comment.Comment(

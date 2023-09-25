@@ -611,10 +611,10 @@
   },
   "components": {
     "securitySchemes": {
-      "keyAuth": {
+      "cookieAuth": {
         "type": "apiKey",
         "name": "api_key",
-        "in": "header"
+        "in": "cookies"
       }
     },
     "schemas": {
@@ -687,7 +687,7 @@
   },
   "security": [
     {
-      "keyAuth": []
+      "cookieAuth": []
     }
   ]
 }
