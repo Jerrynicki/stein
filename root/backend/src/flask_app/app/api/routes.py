@@ -13,6 +13,10 @@ import app.util as util
 @bp.route("/login", methods=["POST"])
 def login():
     req = flask.request.get_json()
+
+    if not all(req["username"], req["password"]):
+        return "", 400
+
     if dbh.validate_login(req["username"], req["password"]):
         # Login valid
         user = dbh.get_user(req["username"])
