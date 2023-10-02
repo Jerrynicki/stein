@@ -1,45 +1,45 @@
 <form autocomplete="off" class="form">
-    <div class="control">
-      <h1>Registrierung</h1>
-    </div>
-    <div class="control block-cube block-input">
-      <input name="email" placeholder="E-Mail" type="email" />
-      <div class="bg-top">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg-right">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg">
-        <div class="bg-inner"></div>
-      </div>
-    </div>
-    <div class="control block-cube block-input">
-      <input name="password" placeholder="Passwort" type="password" />
-      <div class="bg-top">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg-right">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg">
-        <div class="bg-inner"></div>
-      </div>
-    </div>
-    <button class="btn block-cube block-cube-hover" (click)="register()" type="button">
-      <div class="bg-top">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg-right">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="bg">
-        <div class="bg-inner"></div>
-      </div>
-      <div class="text">Registrieren</div>
-    </button>
-    <div class="links">
-      <a href="login">Anmeldung</a>
-    </div>
-  </form>
-  
+  <div>
+    <h1>Registrierung</h1>
+  </div>
+
+  <mat-form-field appearance="outline">
+    <!-- <mat-label>Username</mat-label> -->
+    <mat-select [(value)]="team">
+      <mat-option *ngFor="let team of teams; index as i; first as isFirst" value="team.id">{{team.name}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <!-- <mat-label>Passwort</mat-label> -->
+    <input
+      type="password"
+      matInput
+      [type]="hide ? 'password' : 'text'"
+      placeholder="Passwort"
+      required
+      [(ngModel)]="password"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field>
+
+  <button mat-stroked-button (click)="register()">Registrieren</button>
+
+  <div class="loading" *ngIf="registerstatus == 'Loading'">
+    <mat-progress-spinner
+      [color]="color"
+      [mode]="mode"
+      [value]="value"
+      [diameter]="diameter"
+    >
+    </mat-progress-spinner>
+  </div>
+  <p *ngIf="registerstatus == 'Fail'">
+    Registrierung fehlgeschlagen. Bitte versuchen sie es später noch einmal.
+  </p>
+
+  <div class="links">
+    <a href="#">Passwort vergessen?</a>
+    <a href="login">Anmelden</a>
+  </div>
+</form>

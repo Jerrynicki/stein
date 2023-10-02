@@ -2,8 +2,11 @@
     "cSpell.words": [
         "Anmelden",
         "Anmeldung",
+        "expiretime",
+        "loginstatus",
         "Nutzername",
         "Passwort",
+        "registerstatus",
         "Registrieren",
         "Registrierung",
         "vergessen"

@@ -1,9 +1,10 @@
-export interface LoginResponse {
+export interface RegisterResponse {
   token: string;
   expiry: number;
+  username: string;
 }
 
-export enum LoginStatus {
+export enum RegisterStatus {
   Initial = 'Initial',
   Loading = 'Loading',
   Success = 'Success',
