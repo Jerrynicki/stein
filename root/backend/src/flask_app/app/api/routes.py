@@ -89,7 +89,10 @@ def post_post():
     post.location_lon = req["location_lon"]
     post.image = base64.b64decode(req["image"]) ## TODO image processing
 
-    id = dbh.create_post(post)
+    post.create()
+
+    id = post.id
+    # id = dbh.create_post(post)
 
     return {"id": id}, 200
 
