@@ -9,8 +9,3 @@ class Post(db.Model):
     location_lat = db.Column(db.Float) # latitude N
     location_lon = db.Column(db.Float) # longitude E
     removed = db.Column(db.Boolean)
-
-    def create(self):
-        db.session.add(self)
-        db.session.flush()
-        db.session.commit()

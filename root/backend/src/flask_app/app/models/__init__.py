@@ -1,1 +1,1 @@
-from . import user, post, comment, team, token
+from . import generic, user, post, comment, team, token
