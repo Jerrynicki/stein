@@ -85,6 +85,7 @@ def post_post():
 
     post = models.post.Post()
     post.author = user.name
+    post.timestamp = int(time.time())
     post.location_lat = req["location_lat"]
     post.location_lon = req["location_lon"]
     post.image = base64.b64decode(req["image"]) ## TODO image processing
@@ -92,7 +93,6 @@ def post_post():
     dbh.create(post)
 
     id = post.id
-    # id = dbh.create_post(post)
 
     return {"id": id}, 200
 

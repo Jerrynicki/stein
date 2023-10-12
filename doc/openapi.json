@@ -19,9 +19,12 @@
   },
   "servers": [
     {
-      "url": "https://petstore3.swagger.io/api/v3"
+      "url": "http://localhost:5000/api"
     }
   ],
+  "security": [{
+    "cookieAuth": []
+  }],
   "paths": {
     "/profile": {
       "get": {
@@ -614,7 +617,7 @@
       "cookieAuth": {
         "type": "apiKey",
         "name": "api_key",
-        "in": "cookies"
+        "in": "cookie"
       }
     },
     "schemas": {
@@ -684,10 +687,5 @@
         }
       }
     }
-  },
-  "security": [
-    {
-      "cookieAuth": []
-    }
-  ]
+  }
 }

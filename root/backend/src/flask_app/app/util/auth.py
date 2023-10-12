@@ -13,6 +13,7 @@ def user_from_request(request: flask.Request) -> models.user.User:
     returns None if token is invalid or no token is in cookies"""
     
     key = request.cookies.get("api_key")
+    print(request.cookies.keys())
 
     if key is None:
         return None
