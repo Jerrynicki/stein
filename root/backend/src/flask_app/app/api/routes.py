@@ -293,3 +293,65 @@ def profile_posts_get():
         )
 
     return response, 200
+
+@bp.route("/posts", methods=["GET"])
+def posts_get():
+    # TODO caching
+
+    PAGE_SIZE = 50
+
+    OFFSET = 0.001 # ~112 meters start offset
+    OFFSET_CHANGE = 2 # multiply by 2 on each operation
+    TARGET_LEN = 1000 # find at least 1000 results
+
+    if not util.request.check_fields(flask.request.args, ["page", "location_lat", "location_lon"]):
+        return "", 400
+
+    location_lat = float(flask.request.args["location_lat"])
+    location_lon = float(flask.request.args["location_lon"])
+    page = int(flask.request.args["page"])
+
+    response = []
+
+    results = []
+
+    iteration = 0
+    min_lon, max_lon, min_lat, max_lat = 0,0,0,0
+
+    while len(results) < TARGET_LEN and \
+        not (min_lon < -180 and max_lon > 180 and min_lat < -180 and max_lat > 180):
+
+        min_lon = location_lon - OFFSET * (OFFSET_CHANGE**iteration)
+        max_lon = location_lon + OFFSET * (OFFSET_CHANGE**iteration)
+        min_lat = location_lat - OFFSET * (OFFSET_CHANGE**iteration)
+        max_lat = location_lat + OFFSET * (OFFSET_CHANGE**iteration)
+        
+        start_time = time.time()
+        results = db.session.execute(
+            sqlalchemy.select(
+                models.post.Post
+            ).where(
+                models.post.Post.location_lon >= min_lon,
+                models.post.Post.location_lon <= max_lon,
+                models.post.Post.location_lat >= min_lat,
+                models.post.Post.location_lat <= max_lat
+            )
+        ).scalars().all()
+        end_time = time.time()
+
+        iteration += 1
+
+    response = []
+    for r in results:
+        if not r.removed:
+            response.append(
+                {
+                    "id": r.id,
+                    "author": r.author,
+                    "image_url": util.image_url.get_post_image_url(r.id),
+                    "location_lat": r.location_lat,
+                    "location_lon": r.location_lon
+                }
+            )
+
+    return response[page*PAGE_SIZE:(page+1)*PAGE_SIZE], 200
