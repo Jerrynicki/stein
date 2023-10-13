@@ -16,7 +16,7 @@ externalDocs:
 servers:
 - url: http://localhost:5000/api
 security:
-- cookieAuth: []
+- bearerAuth: []
 paths:
   "/profile":
     get:
@@ -401,10 +401,9 @@ paths:
                       description: Standard hex color format
 components:
   securitySchemes:
-    cookieAuth:
-      type: apiKey
-      name: api_key
-      in: cookie
+    bearerAuth:
+      type: http
+      scheme: bearer
   schemas:
     Post:
       type: object
