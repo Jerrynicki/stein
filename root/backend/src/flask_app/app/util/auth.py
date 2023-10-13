@@ -2,6 +2,7 @@ import flask
 import time
 import hashlib
 import secrets
+import base64
 
 import app.models as models
 import app.dbh.dbhelper as dbhelper
@@ -9,11 +10,11 @@ import app.dbh.dbhelper as dbhelper
 TOKEN_EXPIRY = 30 * 24 * 3600 # 30 days
 
 def user_from_request(request: flask.Request) -> models.user.User:
-    """Gets the authenticated user from the request's cookies containing the api token
-    returns None if token is invalid or no token is in cookies"""
+    """Gets the authenticated user from the request's Bearer auth"""
     
-    key = request.cookies.get("api_key")
-    print(request.cookies.keys())
+    auth_header = request.headers.get("Authorization")
+    
+    key = auth_header.split(" ")[1] # get rid of the Bearer prefix
 
     if key is None:
         return None
