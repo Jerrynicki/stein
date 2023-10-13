@@ -1,8 +1,8 @@
+---
 openapi: 3.0.3
 info:
   title: Stein
-  description: |-
-    hey check out this cool rock i found
+  description: hey check out this cool rock i found
   termsOfService: http://swagger.io/terms/
   contact:
     email: apiteam@swagger.io
@@ -14,21 +14,21 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-  - url: https://petstore3.swagger.io/api/v3
+- url: http://localhost:5000/api
+security:
+- cookieAuth: []
 paths:
-  /profile:
+  "/profile":
     get:
       tags:
-        - Profile
+      - Profile
       summary: Get a profile for the given username
       parameters:
-        - name: name
-          in: query
-          schema:
-            type: string
+      - name: name
+        in: query
+        schema:
+          type: string
       responses:
-        '404':
-          description: Not Found
         '200':
           description: OK
           content:
@@ -41,27 +41,28 @@ paths:
                   profile_picture_url:
                     description: The url of the user's profile picture
                     type: string
-                  admin: 
+                  admin:
                     type: boolean
                   banned:
                     type: boolean
-  /profile/posts:
-    get:
-      tags:
-        - Profile
-      summary: Get a profile's post history
-      parameters:
-        - name: id
-          in: query
-          schema:
-            type: string
-        - name: page
-          in: query
-          schema:
-            type: number
-      responses:
         '404':
           description: Not Found
+  "/profile/posts":
+    get:
+      tags:
+      - Profile
+      summary: Get a profile's post history
+      parameters:
+      - name: name
+        in: query
+        schema:
+          type: string
+      - name: page
+        description: Starting at 0
+        in: query
+        schema:
+          type: number
+      responses:
         '200':
           description: OK
           content:
@@ -69,23 +70,38 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Post'
-  /posts:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    author:
+                      type: string
+                    image_url:
+                      description: The url where the post's image is accessible
+                      type: string
+                    location_lat:
+                      type: number
+                    location_lon:
+                      type: number
+        '404':
+          description: Not Found
+  "/posts":
     get:
       summary: Get the user's recommended posts (location-based)
       parameters:
-        - name: page
-          in: query
-          schema:
-            type: number
-        - name: location_lat
-          in: query
-          schema:
-            type: number
-        - name: location_lon
-          in: query
-          schema:
-            type: number
+      - name: page
+        in: query
+        description: Starting at 0
+        schema:
+          type: number
+      - name: location_lat
+        in: query
+        schema:
+          type: number
+      - name: location_lon
+        in: query
+        schema:
+          type: number
       responses:
         '200':
           description: OK
@@ -94,11 +110,23 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Post'
-  /post:
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    author:
+                      type: string
+                    image_url:
+                      description: The url where the post's image is accessible
+                      type: string
+                    location_lat:
+                      type: number
+                    location_lon:
+                      type: number
+  "/post":
     post:
       tags:
-        - Post
+      - Post
       summary: Submit a post
       requestBody:
         content:
@@ -118,37 +146,48 @@ paths:
           description: OK
         '401':
           description: Unauthorized
-          
     get:
       tags:
-        - Post
+      - Post
       summary: Get a post by id
       parameters:
-        - name: id
-          in: query
-          schema:
-            type: number
+      - name: id
+        in: query
+        schema:
+          type: number
       responses:
-        '404':
-          description: Not Found
         '200':
           description: OK
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Post'
-  /post/comments:
+                type: object
+                properties:
+                  id:
+                    type: number
+                  author:
+                    type: string
+                  image_url:
+                    description: The url where the post's image is accessible
+                    type: string
+                  location_lat:
+                    type: number
+                  location_lon:
+                    type: number
+        '404':
+          description: Not Found
+  "/post/comments":
     get:
       tags:
-        - Post
-        - Comments
+      - Post
+      - Comments
       summary: Get a post's comments
       parameters:
-        - name: id
-          in: query
-          description: Post id
-          schema:
-            type: number
+      - name: id
+        in: query
+        description: Post id
+        schema:
+          type: number
       responses:
         '200':
           description: OK
@@ -157,28 +196,46 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Comment'
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                      description: The comment's id (0 = post author's comment)
+                    author:
+                      type: string
+                      description: The author's username
+                    comment:
+                      type: string
+                      description: The comment's 3 emojis
+                    distance:
+                      type: number
+                      description: The comment's distance from the post in meters
+                    rating:
+                      type: number
+                      description: The comment's rating from 1-5 stars
         '404':
           description: Post not found
     post:
       tags:
-        - Comments
+      - Comments
       summary: Post a comment
       parameters:
-        - name: id
-          in: query
-          description: Post id
-          schema:
-            type: number
+      - name: id
+        in: query
+        description: Post id
+        schema:
+          type: number
       requestBody:
         content:
           application/json:
             schema:
               type: object
               properties:
-                distance:
+                location_lon:
                   type: number
-                rating: 
+                location_lat:
+                  type: number
+                rating:
                   type: number
                 comment:
                   type: string
@@ -186,18 +243,26 @@ paths:
       responses:
         '200':
           description: OK, comment posted
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: The posted comment's id in relation to the post id
         '404':
           description: Post not found
     put:
       tags:
-          - Comments
+      - Comments
       summary: Update a comment
       parameters:
-        - name: id
-          in: query
-          description: Post id
-          schema:
-            type: number
+      - name: id
+        in: query
+        description: Post id
+        schema:
+          type: number
       requestBody:
         content:
           application/json:
@@ -206,10 +271,8 @@ paths:
               properties:
                 id:
                   type: number
-                  description: The comment id
-                distance:
-                  type: number
-                rating: 
+                  description: The comment id (of the edited comment)
+                rating:
                   type: number
                 comment:
                   type: string
@@ -217,37 +280,44 @@ paths:
       responses:
         '200':
           description: OK, comment posted
-        '404':
-          description: Post / comment not found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: number
+                    description: The posted comment's id in relation to the post id
         '401':
           description: Not your comment / not an admin
+        '404':
+          description: Post / comment not found
     delete:
       tags:
-        - Comments
+      - Comments
       summary: Delete a comment
       parameters:
-        - name: id
-          in: query
-          description: Post id
-          schema:
-            type: number
-        - name: comment_id
-          in: query
-          description: comment id
-          schema:
-            type: number
+      - name: id
+        in: query
+        description: Post id
+        schema:
+          type: number
+      - name: comment_id
+        in: query
+        description: comment id
+        schema:
+          type: number
       responses:
         '200':
           description: Comment deleted
-        '404':
-          description: Post / comment not found
         '401':
           description: Not your comment / not an admin
-        
-  /login:
+        '404':
+          description: Post / comment not found
+  "/login":
     post:
       tags:
-        - Authorisation
+      - Authorisation
       summary: Log in with credentials
       requestBody:
         content:
@@ -274,10 +344,10 @@ paths:
                     description: Token expiration timestamp (UNIX seconds)
         '403':
           description: Wrong password or username
-  /register:
+  "/register":
     post:
       tags:
-        - Authorisation
+      - Authorisation
       summary: Register new account
       requestBody:
         content:
@@ -291,8 +361,6 @@ paths:
                   type: number
                   description: the user's chosen team's id
       responses:
-        '429':
-          description: Too Many Requests
         '200':
           description: OK
           content:
@@ -307,10 +375,12 @@ paths:
                   expiry:
                     type: number
                     description: Token expiration timestamp (UNIX seconds)
-  /teams:
+        '429':
+          description: Too Many Requests
+  "/teams":
     get:
       tags:
-        - Teams
+      - Teams
       summary: Get the available Teams and their styling
       responses:
         '200':
@@ -320,13 +390,21 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Team'
+                  type: object
+                  properties:
+                    id:
+                      type: number
+                    name:
+                      type: string
+                    color:
+                      type: string
+                      description: Standard hex color format
 components:
   securitySchemes:
-    keyAuth:
+    cookieAuth:
       type: apiKey
       name: api_key
-      in: header
+      in: cookie
   schemas:
     Post:
       type: object
@@ -342,7 +420,6 @@ components:
           type: number
         location_lon:
           type: number
-            
     Comment:
       type: object
       properties:
@@ -364,7 +441,6 @@ components:
         removed:
           type: boolean
           description: Whether the comment is marked as removed
-          
     Team:
       type: object
       properties:
@@ -374,6 +450,4 @@ components:
           type: string
         color:
           type: string
-          description: Standard hex color format #123ABC
-security:
-  - keyAuth: []
+          description: Standard hex color format
