@@ -19,7 +19,7 @@ def user_from_request(request: flask.Request) -> models.user.User:
         return None
 
     token = dbhelper.get(models.token.Token, models.token.Token.token, key)
-    if token.expiry < time.time():
+    if token is None or token.expiry < time.time():
         return None
     else:
         return token.user
@@ -43,7 +43,7 @@ def create_token(user: models.user.User) -> models.token.Token:
 
     # delete the old token in case it exists
     try:
-        dbhelper.delete(models.token.Token, models.token.Token.token == token)
+        dbhelper.delete_expression(models.token.Token, models.token.Token.token == token)
     except:
         pass
 

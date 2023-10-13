@@ -18,6 +18,15 @@ def get(model, field, value):
         )
     ).scalar_one_or_none()
 
+def get_multiple(model, field, value):
+    return db.session.execute(
+        sqlalchemy.select(
+            model
+        ).where(
+            field == value
+        )
+    ).scalars().all()
+
 def query(model, expression):
     return db.session.execute(
         sqlalchemy.select(
@@ -25,9 +34,14 @@ def query(model, expression):
         ).where(
             expression
         )
-    ).scalars()
+    ).scalars().all()
 
-def delete(model, expression):
+def delete(model):
+    db.session.remove(model)
+    db.session.flush()
+    db.session.commit()
+
+def delete_expression(model, expression):
     db.session.execute(
         sqlalchemy.delete(
             model
@@ -39,4 +53,13 @@ def delete(model, expression):
     db.session.commit()
 
 def all(model):
-    return db.session.execute(sqlalchemy.select(model)).scalars()
+    return db.session.execute(
+        sqlalchemy.select(
+            model
+        )
+    ).scalars().all()
+
+def flcm(model):
+    """flush and commit"""
+    db.session.flush()
+    db.session.commit()

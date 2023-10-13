@@ -97,7 +97,7 @@ def post_post():
     return {"id": id}, 200
 
 @bp.route("/post", methods=["GET"])
-def get_post():
+def post_get():
     assert flask.request.args["id"]
 
     post_id = int(flask.request.args["id"])
@@ -112,3 +112,97 @@ def get_post():
             "author": p.author,
             "image_url": util.image_url.get_post_image_url(post_id)
         }, 200
+
+@bp.route("/post/comments", methods=["GET"])
+def post_comments_get():
+    assert flask.request.args["id"]
+
+    post_id = int(flask.request.args["id"])
+
+    comments = dbh.get_multiple(models.comment.Comment, models.comment.Comment.post_id, post_id)
+
+    response = []
+
+    for c in comments:
+        if not c.removed and not c.edited:
+            response.append(
+                {
+                    "id": c.id,
+                    "author": c.author,
+                    "comment": c.comment,
+                    "timestamp": c.timestamp,
+                    "location_lat": c.location_lat,
+                    "location_lon": c.location_lon,
+                    "rating": c.rating,
+                }
+            )
+
+    return response, 200
+
+@bp.route("/post/comments", methods=["POST", "PUT"])
+def post_comments_post_put():
+    assert flask.request.args["id"]
+
+    post_id = int(flask.request.args["id"])
+
+    post = dbh.get(models.post.Post, models.post.Post.id, post_id)
+    if post is None:
+        return "Post not found", 404
+
+    author = util.auth.user_from_request(flask.request)
+
+    if author is None:
+        return "", 403
+
+    req = flask.request.get_json()
+
+    if not all([req["location_lat"], req["location_lon"], req["rating"], req["comment"]]):
+        return "", 400
+
+    comment = models.comment.Comment()
+    comment.author = author.name
+    comment.comment = req["comment"]
+    comment.location_lat = req["location_lat"]
+    comment.location_lon = req["location_lon"]
+    comment.post_id = post_id
+    comment.rating = req["rating"]
+    comment.removed = False
+    comment.timestamp = int(time.time())
+
+    if request.method == "POST":
+        dbh.create(comment)
+    if request.method == "PUT":
+        # set the old comment to status edited with a reference to the new comment
+        old_comment = dbh.get(models.comment.Comment, models.comment.Comment.id, req["id"])
+        if old_comment is None:
+            return "Comment not found", 404
+        if old_comment.author != author.name and not author.admin:
+            return "", 401
+
+        dbh.create(comment)
+
+        old_comment.edited = True
+        old_comment.edited_followup = comment.id
+        dbh.flcm()
+
+    return {"id": comment.id}, 200
+
+@bp.route("/teams", methods=["GET"])
+def teams_get():
+    response = []
+
+    teams = dbh.all(models.team.Team)
+
+    print(teams)
+
+    for t in teams:
+        response.append(
+            {
+                "id": t.id,
+                "name": t.name,
+                "color": t.color
+            }
+        )
+
+    return response, 200
+

@@ -11,4 +11,7 @@ class Comment(db.Model):
     location_lat = db.Column(db.Float) # latitude N
     location_lon = db.Column(db.Float) # longitude E
     rating = db.Column(db.Integer)
-    removed = db.Column(db.Boolean)
+    
+    removed = db.Column(db.Boolean, default=False)
+    edited = db.Column(db.Boolean, default=False)
+    edited_followup = db.Column(db.Integer) # the id of the next comment
