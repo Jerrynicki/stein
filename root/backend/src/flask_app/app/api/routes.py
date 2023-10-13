@@ -1,10 +1,13 @@
 import flask
+import sqlalchemy
 
 import hashlib
 import secrets
 import base64
+import time
 
 from app.api import bp
+from app.extensions import db
 import app.models as models
 import app.dbh.dbhelper as dbh
 
@@ -14,7 +17,7 @@ import app.util as util
 def login():
     req = flask.request.get_json()
 
-    if not all([req["username"], req["password"]]):
+    if not util.request.check_fields(req, ["username", "password"]):
         return "", 400
 
     if util.auth.validate_login(req["username"], req["password"]):
@@ -32,6 +35,9 @@ def login():
 @bp.route("/register", methods=["POST"])
 def register():
     req = flask.request.get_json()
+
+    if not util.request.check_fields(req, ["team", "password"]):
+        return "", 400
     
     teams = dbh.all(models.team.Team)
 
@@ -78,6 +84,10 @@ def post_post():
 
     req = flask.request.get_json()
 
+    if not util.request.check_fields(req,
+        ["location_lat", "location_lon", "image"]):
+        return "", 400
+
     if req["location_lat"] < -180 or req["location_lat"] > 180 \
         or \
     req["location_lon"] < -180 or req["location_lon"] > 180:
@@ -98,7 +108,8 @@ def post_post():
 
 @bp.route("/post", methods=["GET"])
 def post_get():
-    assert flask.request.args["id"]
+    if not util.request.check_fields(flask.request.args, ["id"]):
+        return "", 400
 
     post_id = int(flask.request.args["id"])
 
@@ -115,9 +126,14 @@ def post_get():
 
 @bp.route("/post/comments", methods=["GET"])
 def post_comments_get():
-    assert flask.request.args["id"]
+    if not util.request.check_fields(flask.request.args, ["id"]):
+        return "", 400
 
     post_id = int(flask.request.args["id"])
+    post = dbh.get(models.post.Post, models.post.Post.id, post_id)
+
+    if post is None:
+        return "Post not found", 404
 
     comments = dbh.get_multiple(models.comment.Comment, models.comment.Comment.post_id, post_id)
 
@@ -125,14 +141,19 @@ def post_comments_get():
 
     for c in comments:
         if not c.removed and not c.edited:
+            dist = util.coords.distance_between_coords(
+                post.location_lat,
+                post.location_lon,
+                c.location_lat,
+                c.location_lon
+            )
             response.append(
                 {
                     "id": c.id,
                     "author": c.author,
                     "comment": c.comment,
                     "timestamp": c.timestamp,
-                    "location_lat": c.location_lat,
-                    "location_lon": c.location_lon,
+                    "distance": int(dist),
                     "rating": c.rating,
                 }
             )
@@ -141,7 +162,16 @@ def post_comments_get():
 
 @bp.route("/post/comments", methods=["POST", "PUT"])
 def post_comments_post_put():
-    assert flask.request.args["id"]
+    req = flask.request.get_json()
+
+    if not util.request.check_fields(flask.request.args, ["id"]):
+        return "", 400
+    if flask.request.method == "POST":
+        if not util.request.check_fields(req, ["location_lon", "location_lat", "rating", "comment"]):
+            return "", 400
+    if flask.request.method == "PUT":
+        if not util.request.check_fields(req, ["id", "rating", "comment"]):
+            return "", 400
 
     post_id = int(flask.request.args["id"])
 
@@ -154,31 +184,30 @@ def post_comments_post_put():
     if author is None:
         return "", 403
 
-    req = flask.request.get_json()
-
-    if not all([req["location_lat"], req["location_lon"], req["rating"], req["comment"]]):
-        return "", 400
-
     comment = models.comment.Comment()
     comment.author = author.name
     comment.comment = req["comment"]
-    comment.location_lat = req["location_lat"]
-    comment.location_lon = req["location_lon"]
     comment.post_id = post_id
     comment.rating = req["rating"]
     comment.removed = False
     comment.timestamp = int(time.time())
 
-    if request.method == "POST":
+    if flask.request.method == "POST":
+        comment.location_lat = req["location_lat"]
+        comment.location_lon = req["location_lon"]
         dbh.create(comment)
-    if request.method == "PUT":
+    if flask.request.method == "PUT":
         # set the old comment to status edited with a reference to the new comment
         old_comment = dbh.get(models.comment.Comment, models.comment.Comment.id, req["id"])
         if old_comment is None:
             return "Comment not found", 404
         if old_comment.author != author.name and not author.admin:
             return "", 401
+        if old_comment.edited or old_comment.removed:
+            return "Comment has already been edited", 404
 
+        comment.location_lat = old_comment.location_lat
+        comment.location_lon = old_comment.location_lon
         dbh.create(comment)
 
         old_comment.edited = True
@@ -206,3 +235,61 @@ def teams_get():
 
     return response, 200
 
+@bp.route("/profile", methods=["GET"])
+def profile_get():
+    if not util.request.check_fields(flask.request.args, ["name"]):
+        return "", 400
+
+    username = flask.request.args["name"]
+    user = dbh.get(models.user.User, models.user.User.name, username)
+
+    if user is None:
+        return "User not found", 404
+
+    return {
+        "name": user.name,
+        "profile_picture_url": util.image_url.get_profile_image_url(username),
+        "admin": user.admin,
+        "banned": user.banned
+    }, 200
+
+@bp.route("/profile/posts", methods=["GET"])
+def profile_posts_get():
+    PAGE_SIZE = 50
+
+    print(flask.request.args)
+    if not util.request.check_fields(flask.request.args, ["name", "page"]):
+        return "", 400
+
+    username = flask.request.args["name"]
+    page = int(flask.request.args["page"])
+
+    user = dbh.get(models.user.User, models.user.User.name, username)
+    if user is None:
+        return "User not found", 404
+
+    posts = db.session.execute(
+        sqlalchemy.select(
+            models.post.Post
+        ).where(
+            models.post.Post.author == username
+        ).limit(
+            PAGE_SIZE
+        ).offset(
+            PAGE_SIZE * page
+        )
+    ).scalars().all()
+    
+    response = []
+    for p in posts:
+        response.append(
+            {
+                "id": p.id,
+                "author": p.author,
+                "image_url": util.image_url.get_post_image_url(p.id),
+                "location_lat": p.location_lat,
+                "location_lon": p.location_lon
+            }
+        )
+
+    return response, 200

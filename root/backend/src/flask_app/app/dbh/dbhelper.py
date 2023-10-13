@@ -59,7 +59,7 @@ def all(model):
         )
     ).scalars().all()
 
-def flcm(model):
+def flcm():
     """flush and commit"""
     db.session.flush()
     db.session.commit()
