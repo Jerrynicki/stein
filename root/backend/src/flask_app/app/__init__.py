@@ -28,4 +28,16 @@ def create_app():
     with app.app_context():
         db.create_all()
 
+        if app.debug:
+            # ensure that a team always exists
+            # after the db was reset
+            # (it less annoying)
+            import app.dbh.dbhelper as dbh
+            if len(dbh.all(models.team.Team)) == 0:
+                t = models.team.Team()
+                t.id = -1
+                t.name = "stein-debugger"
+                t.color = "#69420a"
+                dbh.create(t)
+
     return app

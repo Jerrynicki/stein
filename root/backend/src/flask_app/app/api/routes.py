@@ -93,18 +93,26 @@ def post_post():
     req["location_lon"] < -180 or req["location_lon"] > 180:
         return "Longitude/Latitude format invalid", 400
 
+    # Create post
     post = models.post.Post()
     post.author = user.name
     post.timestamp = int(time.time())
     post.location_lat = req["location_lat"]
     post.location_lon = req["location_lon"]
-    post.image = base64.b64decode(req["image"]) ## TODO image processing
 
     dbh.create(post)
 
-    id = post.id
+    # Image processing and create images
+    image_raw = base64.b64decode(req["image"])
+    images = util.image.to_post_pictures(
+        image_raw,
+        post.id
+    )
 
-    return {"id": id}, 200
+    for i in images:
+        dbh.create(i)
+
+    return {"id": post.id}, 200
 
 @bp.route("/post", methods=["GET"])
 def post_get():
@@ -121,7 +129,7 @@ def post_get():
         return {
             "id": p.id,
             "author": p.author,
-            "image_url": util.image_url.get_post_image_url(post_id)
+            "images": util.image_url.get_post_images(post_id)
         }, 200
 
 @bp.route("/post/comments", methods=["GET"])
@@ -286,7 +294,7 @@ def profile_posts_get():
             {
                 "id": p.id,
                 "author": p.author,
-                "image_url": util.image_url.get_post_image_url(p.id),
+                "images": util.image_url.get_post_images(p.id),
                 "location_lat": p.location_lat,
                 "location_lon": p.location_lon
             }

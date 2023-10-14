@@ -3,3 +3,4 @@ from . import image_url
 from . import auth
 from . import coords
 from . import request
+from . import image
