@@ -1,9 +1,28 @@
-STATIC_PREFIX = "/static"
+import flask
+
+import app.dbh.dbhelper as dbh
+import app.models as models
+
+STATIC_DB_PREFIX = "/dbstatic" # see main/dbserve.py
 POST_IMAGES_PREFIX = "/images/post"
 PROFILE_IMAGES_PREFIX = "/images/user"
 
-def get_post_image_url(id: int):
-    return STATIC_PREFIX + POST_IMAGES_PREFIX + "/" + str(id)
+def get_post_images(post_id: int) -> list[dict]:
+    response = []
+
+    images = dbh.get_multiple(models.post_picture.PostPicture, models.post_picture.PostPicture.post_id, post_id)
+
+    for pi in images:
+        response.append(
+            {
+                "quality_level": pi.quality_level,
+                "width": pi.width,
+                "height": pi.height,
+                "url": STATIC_DB_PREFIX + POST_IMAGES_PREFIX + "/" + str(pi.id)
+            }
+        )
+
+    return response
 
 def get_profile_image_url(name: str):
-    return STATIC_PREFIX + PROFILE_IMAGES_PREFIX + "/" + name
+    return STATIC_DB_PREFIX + PROFILE_IMAGES_PREFIX + "/" + name

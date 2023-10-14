@@ -14,10 +14,10 @@ def user_from_request(request: flask.Request) -> models.user.User:
     
     auth_header = request.headers.get("Authorization")
     
-    key = auth_header.split(" ")[1] # get rid of the Bearer prefix
-
-    if key is None:
+    if auth_header is None:
         return None
+
+    key = auth_header.split(" ")[1] # get rid of the Bearer prefix
 
     token = dbhelper.get(models.token.Token, models.token.Token.token, key)
     if token is None or token.expiry < time.time():
