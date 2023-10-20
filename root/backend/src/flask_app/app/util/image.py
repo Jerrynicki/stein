@@ -9,9 +9,9 @@ import app.models as models
 # axis that the image will be rendered down to
 # images should not be rendered "upwards"
 QUALITY_LEVELS = {
-    0: 1920//2,
-    1: 1920,
-    2: 1920*2
+    0: 1920//4,
+    1: 1920//2,
+    2: 1920
 }
 IMG_TYPE = {
     "mime": "image/jpeg",
