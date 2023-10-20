@@ -24,7 +24,7 @@ def dbstatic(path):
 
             return response
         elif path[1] == "user":
-            profile_pic = dbh.get(models.profile_picture.ProfilePicture, models.profile_picture.ProfilePicture.user, path[2])
+            profile_pic = dbh.get(models.profile_picture.ProfilePicture, models.profile_picture.ProfilePicture.user_name, path[2])
 
             if profile_pic is None:
                 return "Not found", 404

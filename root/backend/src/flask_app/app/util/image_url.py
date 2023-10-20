@@ -25,4 +25,11 @@ def get_post_images(post_id: int) -> list[dict]:
     return response
 
 def get_profile_image_url(name: str):
-    return STATIC_DB_PREFIX + PROFILE_IMAGES_PREFIX + "/" + name
+    """Returns None if user doesn't have a profile picture, otherwise returns the
+    link to it"""
+
+    if dbh.get(models.profile_picture.ProfilePicture, models.profile_picture.ProfilePicture.user_name, name)\
+        is not None:
+        return STATIC_DB_PREFIX + PROFILE_IMAGES_PREFIX + "/" + name
+    else:
+        return None

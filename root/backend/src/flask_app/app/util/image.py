@@ -23,7 +23,8 @@ RESIZE_ALGO = Image.Resampling.BICUBIC
 def to_post_pictures(image: bytes, post_id: int) -> list[models.post_picture.PostPicture]:
     result = list()
     
-    img_pre = Image.open(io.BytesIO(image))
+    img_pre_io = io.BytesIO(image)
+    img_pre = Image.open(img_pre_io)
     
     width = img_pre.width
     height = img_pre.height
@@ -53,8 +54,6 @@ def to_post_pictures(image: bytes, post_id: int) -> list[models.post_picture.Pos
 
             img = img_pre.resize((new_width, new_height), resample=RESIZE_ALGO)
 
-        print(new_width, new_height, width, height, img.size, level, QUALITY_LEVELS[level])
-
         assert img is not None # if this fails, there is a logic error somewhere
 
         img_io = io.BytesIO()
@@ -75,18 +74,55 @@ def to_post_pictures(image: bytes, post_id: int) -> list[models.post_picture.Pos
             break
 
     img_pre.close()
+    img_pre_io.close()
 
     return result
 
-def to_profile_picture(image: bytes) -> models.profile_picture.ProfilePicture:
-    # TODO
+def to_profile_picture(image: bytes, user_name: str) -> models.profile_picture.ProfilePicture:
+    """Crops the image to be a square and resizes it to 384x384"""
+
+    SIZE = 384
     
-    with Image.open("hopper.jpg") as im:
+    img_pre_io = io.BytesIO(image)
+    img_pre = Image.open(img_pre_io)
+    
+    width = img_pre.width
+    height = img_pre.height
+    size = (width, height)
 
-        # The crop method from the Image module takes four coordinates as input.
-        # The right can also be represented as (left+width)
-        # and lower can be represented as (upper+height).
-        (left, upper, right, lower) = (20, 20, 100, 100)
+    box = (0, 0, 0, 0)
 
-        # Here the image "im" is cropped and assigned to new variable im_crop
-        im_crop = im.crop((left, upper, right, lower))
+    if width > height:
+        box = (
+            (width-height)//2,
+            0,
+            width - (width-height)//2,
+            height
+        )
+    else: 
+        box = (
+            0,
+            (height-width)//2,
+            width,
+            height - (height-width)//2
+        )
+
+    img = img_pre.crop(box=box)
+    img = img.resize((SIZE, SIZE), resample=RESIZE_ALGO)
+
+    img_io = io.BytesIO()
+    img.save(img_io, format=IMG_TYPE["pil_format"], quality=IMG_TYPE["quality"])
+    
+    result = models.profile_picture.ProfilePicture()
+    result.user_name = user_name
+    result.mimetype = IMG_TYPE["mime"]
+    result.width = SIZE
+    result.height = SIZE
+    result.image = img_io.getvalue()
+    
+    img_pre.close()
+    img.close()
+    img_io.close()
+    img_pre_io.close()
+
+    return result
