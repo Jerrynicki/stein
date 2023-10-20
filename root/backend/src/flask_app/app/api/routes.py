@@ -112,6 +112,11 @@ def post_post():
     for i in images:
         dbh.create(i)
 
+    # Check if user has profile picture and set as picture if they don't
+    if util.image_url.get_profile_image_url(user.name) is None:
+        profile_pic = util.image.to_profile_picture(image_raw, user.name)
+        dbh.create(profile_pic)
+
     return {"id": post.id}, 200
 
 @bp.route("/post", methods=["GET"])
@@ -356,10 +361,17 @@ def posts_get():
                 {
                     "id": r.id,
                     "author": r.author,
-                    "image_url": util.image_url.get_post_image_url(r.id),
+                    "images": util.image_url.get_post_images(r.id),
                     "location_lat": r.location_lat,
-                    "location_lon": r.location_lon
+                    "location_lon": r.location_lon,
+                    "distance": util.coords.distance_between_coords(
+                        location_lat, location_lon,
+                        r.location_lat, r.location_lon
+                    )
                 }
             )
+
+    # sort by distance
+    response = sorted(response, key=lambda k: k["distance"])
 
     return response[page*PAGE_SIZE:(page+1)*PAGE_SIZE], 200

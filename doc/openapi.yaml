@@ -39,7 +39,7 @@ paths:
                   name:
                     type: string
                   profile_picture_url:
-                    description: The url of the user's profile picture
+                    description: The url of the user's profile picture, may be null
                     type: string
                   admin:
                     type: boolean
@@ -123,13 +123,27 @@ paths:
                       type: number
                     author:
                       type: string
-                    image_url:
-                      description: The url where the post's image is accessible
-                      type: string
+                    images:
+                      description: The quality levels available for the post's images and their urls
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          quality_level:
+                            type: number
+                          height:
+                            type: number
+                          width:
+                            type: number
+                          url:
+                            type: string
                     location_lat:
                       type: number
                     location_lon:
                       type: number
+                    distance:
+                      type: number
+                      description: Distance from the request lat/lon in meters
   "/post":
     post:
       tags:
