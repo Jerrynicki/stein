@@ -1,43 +1,48 @@
 <form autocomplete="off" class="form">
-  <div class="control">
+  <div>
     <h1>Anmeldung</h1>
   </div>
-  <div class="control block-cube block-input">
-    <input name="username" placeholder="Nutzername" type="text" />
-    <div class="bg-top">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg-right">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg">
-      <div class="bg-inner"></div>
-    </div>
+
+  <mat-form-field appearance="outline">
+    <!-- <mat-label>Username</mat-label> -->
+    <input
+      type="text"
+      matInput
+      placeholder="Username"
+      required
+      [(ngModel)]="username"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field>
+
+  <mat-form-field appearance="outline">
+    <!-- <mat-label>Passwort</mat-label> -->
+    <input
+      type="password"
+      matInput
+      [type]="hide ? 'password' : 'text'"
+      placeholder="Passwort"
+      required
+      [(ngModel)]="password"
+      [ngModelOptions]="{ standalone: true }"
+    />
+  </mat-form-field>
+
+  <button mat-stroked-button (click)="login()">Anmelden</button>
+
+  <div class="loading" *ngIf="loginstatus == 'Loading'" >
+    <mat-progress-spinner
+      [color]="color"
+      [mode]="mode"
+      [value]="value"
+      [diameter]="diameter"
+    >
+    </mat-progress-spinner>
   </div>
-  <div class="control block-cube block-input">
-    <input name="password" placeholder="Passwort" type="password" />
-    <div class="bg-top">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg-right">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg">
-      <div class="bg-inner"></div>
-    </div>
-  </div>
-  <button class="btn block-cube block-cube-hover" type="button">
-    <div class="bg-top">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg-right">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="bg">
-      <div class="bg-inner"></div>
-    </div>
-    <div class="text">Anmelden</div>
-  </button>
+  <p *ngIf="loginstatus == 'Fail'">
+    Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.
+  </p>
+
   <div class="links">
     <a href="#">Passwort vergessen?</a>
     <a href="registration">Registrieren</a>
