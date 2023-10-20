@@ -1,1 +1,5 @@
-{"SQLALCHEMY_DATABASE_URI": "sqlite:///stein.db"}
+{
+    "SQLALCHEMY_DATABASE_URI": "sqlite:///stein.db", 
+    "static_url_path": "/static",
+    "static_folder": "static"
+}

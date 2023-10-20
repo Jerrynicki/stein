@@ -32,6 +32,18 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 # **Backend:**
 
+How to run:
+
+- Install [Python](https://python.org)
+
+- Use the [Setup script](./root/backend/setup.sh) to configure the virtual environment (Windows: copy and paste the commands while inside the root/backend folder)
+
+- When in the virtual environment, start the flask server using the [run_debug.sh script](./root/backend/src/flask_app/run_debug.sh) to create the database
+
+- Create at least one team, otherwise registration won't work (using e.g. [DB Browser for SQLite](https://sqlitebrowser.org/)), the database is located in the var/app-instance directory created at the root of the virtual environment
+
+- Start the flask server using the [run_debug.sh script](./root/backend/src/flask_app/run_debug.sh)
+
 ---
 
 # **Stein:**
