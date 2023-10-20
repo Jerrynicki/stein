@@ -128,7 +128,7 @@ def post_get():
 
     p = dbh.get(models.post.Post, models.post.Post.id, post_id)
 
-    if p is None:
+    if p is None or p.removed:
         return "", 404
     else:
         return {
@@ -136,6 +136,30 @@ def post_get():
             "author": p.author,
             "images": util.image_url.get_post_images(post_id)
         }, 200
+
+@bp.route("/post", methods=["DELETE"])
+def post_delete():
+    if not util.request.check_fields(flask.request.args, ["id"]):
+        return "", 400
+
+    post_id = int(flask.request.args["id"])
+
+    u = util.auth.user_from_request(flask.request)
+
+    if u is None:
+        return "Unauthorized", 403
+
+    p = dbh.get(models.post.Post, models.post.Post.id, post_id)
+
+    if p is None or p.removed:
+        return "", 404
+    
+    if p.author == u.name:
+        p.removed = True
+        dbh.flcm()
+        return "", 200
+    else:
+        return "", 401
 
 @bp.route("/post/comments", methods=["GET"])
 def post_comments_get():
@@ -145,7 +169,7 @@ def post_comments_get():
     post_id = int(flask.request.args["id"])
     post = dbh.get(models.post.Post, models.post.Post.id, post_id)
 
-    if post is None:
+    if post is None or post.removed:
         return "Post not found", 404
 
     comments = dbh.get_multiple(models.comment.Comment, models.comment.Comment.post_id, post_id)
@@ -212,11 +236,11 @@ def post_comments_post_put():
     if flask.request.method == "PUT":
         # set the old comment to status edited with a reference to the new comment
         old_comment = dbh.get(models.comment.Comment, models.comment.Comment.id, req["id"])
-        if old_comment is None:
+        if old_comment is None or old_comment.removed:
             return "Comment not found", 404
         if old_comment.author != author.name and not author.admin:
             return "", 401
-        if old_comment.edited or old_comment.removed:
+        if old_comment.edited:
             return "Comment has already been edited", 404
 
         comment.location_lat = old_comment.location_lat
@@ -228,6 +252,31 @@ def post_comments_post_put():
         dbh.flcm()
 
     return {"id": comment.id}, 200
+
+@bp.route("/post/comments", methods=["DELETE"])
+def post_comments_delete():
+    if not util.request.check_fields(flask.request.args, ["id", "comment_id"]):
+        return "", 400
+
+    comment_id = int(flask.request.args["comment_id"])
+    post_id = int(flask.request.args["id"])
+
+    u = util.auth.user_from_request(flask.request)
+
+    if u is None:
+        return "Unauthorized", 403
+
+    c = dbh.get(models.comment.Comment, models.comment.Comment.id, comment_id)
+
+    if c is None or c.removed or c.edited:
+        return "", 404
+    
+    if c.author == u.name:
+        c.removed = True
+        dbh.flcm()
+        return "", 200
+    else:
+        return "", 401
 
 @bp.route("/teams", methods=["GET"])
 def teams_get():
@@ -286,6 +335,7 @@ def profile_posts_get():
             models.post.Post
         ).where(
             models.post.Post.author == username
+        ).order_by(models.post.Post.timestamp.desc()
         ).limit(
             PAGE_SIZE
         ).offset(
@@ -347,7 +397,8 @@ def posts_get():
                 models.post.Post.location_lon >= min_lon,
                 models.post.Post.location_lon <= max_lon,
                 models.post.Post.location_lat >= min_lat,
-                models.post.Post.location_lat <= max_lat
+                models.post.Post.location_lat <= max_lat,
+                models.post.Post.removed == False or models.post.Post.removed == None
             )
         ).scalars().all()
         end_time = time.time()
@@ -364,10 +415,10 @@ def posts_get():
                     "images": util.image_url.get_post_images(r.id),
                     "location_lat": r.location_lat,
                     "location_lon": r.location_lon,
-                    "distance": util.coords.distance_between_coords(
+                    "distance": int(util.coords.distance_between_coords(
                         location_lat, location_lon,
                         r.location_lat, r.location_lon
-                    )
+                    ))
                 }
             )
 
