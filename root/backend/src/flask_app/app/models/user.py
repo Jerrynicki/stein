@@ -6,3 +6,4 @@ class User(db.Model):
     password_salt = db.Column(db.BLOB(length=16)) # length 16
     admin = db.Column(db.Boolean)
     banned = db.Column(db.Boolean)
+    team = db.Column(db.ForeignKey("team.id"))

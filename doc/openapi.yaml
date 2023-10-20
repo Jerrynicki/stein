@@ -45,6 +45,9 @@ paths:
                     type: boolean
                   banned:
                     type: boolean
+                  team:
+                    type: number
+                    description: The team id the user is in
         '404':
           description: Not Found
   "/profile/posts":

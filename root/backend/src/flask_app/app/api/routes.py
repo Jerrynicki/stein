@@ -43,7 +43,7 @@ def register():
 
     team_valid = False
     for team in teams:
-        if team.id == req["team"]:
+        if team.id == int(req["team"]):
             team_valid = True
 
     if not team_valid:
@@ -53,6 +53,7 @@ def register():
 
     new_user.admin = False
     new_user.banned = False
+    new_user.team = int(req["team"])
 
     name_unique = False
     while not name_unique:
@@ -312,7 +313,8 @@ def profile_get():
         "name": user.name,
         "profile_picture_url": util.image_url.get_profile_image_url(username),
         "admin": user.admin,
-        "banned": user.banned
+        "banned": user.banned,
+        "team": user.team
     }, 200
 
 @bp.route("/profile/posts", methods=["GET"])
