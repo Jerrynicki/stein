@@ -356,7 +356,7 @@ def posts_get():
                 {
                     "id": r.id,
                     "author": r.author,
-                    "image_url": util.image_url.get_post_image_url(r.id),
+                    "images": util.image_url.get_post_images(r.id),
                     "location_lat": r.location_lat,
                     "location_lon": r.location_lon
                 }
