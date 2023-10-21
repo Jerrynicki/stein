@@ -1,0 +1,24 @@
+<mat-card class="card" (click)="onClick(post.id)">
+  <mat-card-header>
+    <mat-card-title> {{ post.author }} </mat-card-title>
+  </mat-card-header>
+
+  <mat-card-content>
+    <img
+      mat-card-image
+      [src]="post.image_medium"
+      alt="alt text in current version not supported"
+    />
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      mat-stroked-button
+      color="warn"
+      (click)="deletePost()"
+      *ngIf="post.author == this.loginName"
+    >
+      LÖSCHEN (in current version not supported)
+    </button>
+  </mat-card-actions>
+</mat-card>
