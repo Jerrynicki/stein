@@ -12,8 +12,11 @@ import app.models as models
 import app.dbh.dbhelper as dbh
 
 import app.util as util
+from app.util.cooldowns import CostEnum
+from app.util.cooldowns import cooldown
 
 @bp.route("/login", methods=["POST"])
+@cooldown(CostEnum.NORMAL)
 def login():
     req = flask.request.get_json()
 
@@ -33,6 +36,7 @@ def login():
         return "Invalid login", 403
 
 @bp.route("/register", methods=["POST"])
+@cooldown(CostEnum.EXPENSIVE)
 def register():
     req = flask.request.get_json()
 
@@ -77,6 +81,7 @@ def register():
     }, 200
 
 @bp.route("/post", methods=["POST"])
+@cooldown(CostEnum.NORMAL)
 def post_post():
     user = util.auth.user_from_request(flask.request)
 
@@ -121,6 +126,7 @@ def post_post():
     return {"id": post.id}, 200
 
 @bp.route("/post", methods=["GET"])
+@cooldown(CostEnum.LOW)
 def post_get():
     if not util.request.check_fields(flask.request.args, ["id"]):
         return "", 400
@@ -139,6 +145,7 @@ def post_get():
         }, 200
 
 @bp.route("/post", methods=["DELETE"])
+@cooldown(CostEnum.LOW)
 def post_delete():
     if not util.request.check_fields(flask.request.args, ["id"]):
         return "", 400
@@ -163,6 +170,7 @@ def post_delete():
         return "", 401
 
 @bp.route("/post/comments", methods=["GET"])
+@cooldown(CostEnum.LOW)
 def post_comments_get():
     if not util.request.check_fields(flask.request.args, ["id"]):
         return "", 400
@@ -199,6 +207,7 @@ def post_comments_get():
     return response, 200
 
 @bp.route("/post/comments", methods=["POST", "PUT"])
+@cooldown(CostEnum.NORMAL)
 def post_comments_post_put():
     req = flask.request.get_json()
 
@@ -255,6 +264,7 @@ def post_comments_post_put():
     return {"id": comment.id}, 200
 
 @bp.route("/post/comments", methods=["DELETE"])
+@cooldown(CostEnum.LOW)
 def post_comments_delete():
     if not util.request.check_fields(flask.request.args, ["id", "comment_id"]):
         return "", 400
@@ -280,6 +290,7 @@ def post_comments_delete():
         return "", 401
 
 @bp.route("/teams", methods=["GET"])
+@cooldown(CostEnum.LOW)
 def teams_get():
     response = []
 
@@ -299,6 +310,7 @@ def teams_get():
     return response, 200
 
 @bp.route("/profile", methods=["GET"])
+@cooldown(CostEnum.NONE)
 def profile_get():
     if not util.request.check_fields(flask.request.args, ["name"]):
         return "", 400
@@ -318,6 +330,7 @@ def profile_get():
     }, 200
 
 @bp.route("/profile/posts", methods=["GET"])
+@cooldown(CostEnum.NORMAL)
 def profile_posts_get():
     PAGE_SIZE = 50
 
@@ -360,6 +373,7 @@ def profile_posts_get():
     return response, 200
 
 @bp.route("/posts", methods=["GET"])
+@cooldown(CostEnum.NORMAL)
 def posts_get():
     # TODO caching
 

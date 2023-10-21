@@ -1,5 +1,6 @@
 {
     "SQLALCHEMY_DATABASE_URI": "sqlite:///stein.db", 
-    "static_url_path": "/static",
-    "static_folder": "static"
+    "static_url_path": "/",
+    "static_folder": "static",
+    "frontend_folder": "../../../"
 }
