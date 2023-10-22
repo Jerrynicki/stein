@@ -5,10 +5,10 @@
 
   <mat-form-field appearance="outline">
     <!-- <mat-label>Username</mat-label> -->
-    <mat-select [(value)]="team">
+    <mat-select [(ngModel)]="team" [ngModelOptions]="{ standalone: true }">
       <mat-option
         *ngFor="let team of teams; index as i; first as isFirst"
-        value="i"
+        [value]="i"
         >{{ teams[i] }}</mat-option
       >
     </mat-select>

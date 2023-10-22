@@ -37,7 +37,7 @@ export class LoginComponent {
     this.loginstatus = LoginStatus.Loading;
     this.http
       .post<LoginResponse>(
-        'http://localhost:3000/login',
+        'http://127.0.0.1:5000/api/login',
         {
           username: this.username,
           password: this.password,
