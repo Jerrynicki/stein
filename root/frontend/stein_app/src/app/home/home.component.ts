@@ -15,15 +15,12 @@ export class HomeComponent implements OnInit {
   ) {}
   ngOnInit() {
     this.geolocation.subscribe((position) => {
-      if (this.completed == false) {
-        this.getPosts(position.coords.latitude, position.coords.longitude, 0);
-      }
+      this.getPosts(position.coords.latitude, position.coords.longitude, 0);
     });
   }
 
   posts!: PostInterface[];
   completed = false;
-
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -49,9 +46,7 @@ export class HomeComponent implements OnInit {
             this.posts = response;
           }
         },
-        error: (error) => {
-
-        },
+        error: (error) => {},
         complete: () => {
           this.completed = true;
         },

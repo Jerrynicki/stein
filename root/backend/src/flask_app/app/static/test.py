@@ -1,7 +1,7 @@
 import requests
 
-token = "3a961bdf155ee8810cba6538ab4b847609a9"
-img = open("anderes bild.jpg.b64", "r").read()
+token = "0bfe45829be0cecbf9289e6d4286372474ad"
+img = open("an image.png.b64", "r").read()
 
 a = input()
 

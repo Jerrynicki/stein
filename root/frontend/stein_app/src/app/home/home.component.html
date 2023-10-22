@@ -16,5 +16,6 @@
     class="post"
     *ngFor="let post of posts; index as i; first as isFirst"
     [post]="post"
+    [delete]="false"
   ></app-post-small>
 </div>

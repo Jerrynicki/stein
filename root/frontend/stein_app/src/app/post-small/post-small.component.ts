@@ -10,8 +10,9 @@ import { PostInterface } from '../post.interface';
 })
 export class PostSmallComponent {
   constructor(private http: HttpClient, private router: Router) {}
-  @Input()
-  post!: PostInterface;
+
+  @Input() post!: PostInterface;
+  @Input() delete!: boolean;
 
   loginName = sessionStorage.getItem('loginName');
   api = 'http://127.0.0.1:5000';
