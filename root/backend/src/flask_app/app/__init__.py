@@ -6,6 +6,8 @@ from flask_cors import CORS
 
 from app.extensions import db
 
+from werkzeug.middleware.proxy_fix import ProxyFix
+
 CONFIG_LOCATION = os.path.abspath(os.path.dirname(__file__)) + "/stein.json"
 
 def create_app():
@@ -13,6 +15,10 @@ def create_app():
 
     app = flask.Flask(__name__)
     CORS(app) # needed for swagger
+    app.wsgi_app = ProxyFix( # app is running behind a reverse proxy
+        app.wsgi_app, x_for=1, x_proto=1, x_host=1, x_prefix=1
+    )
+
 
     # app.config.from_object(cfg.get_flask_config())
     app.config.from_file(CONFIG_LOCATION, load=json.load)
