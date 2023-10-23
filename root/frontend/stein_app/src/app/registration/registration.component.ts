@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { RegisterResponse, RegisterStatus } from './register.interface';
+import {
+  RegisterResponse,
+  RegisterStatus,
+  TeamResponse,
+} from './register.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-registration',
@@ -10,11 +15,14 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
   ngOnInit(): void {
-    this.http.get('http://localhost:3000/teams').subscribe({
+    this.http.get<TeamResponse[]>('http://127.0.0.1:5000/api/teams').subscribe({
       next: (response) => {
-        this.teams = response;
+        response.forEach((index) => {
+          this.teams.push(index.name);
+        });
       },
       error: (error) => {
         console.error(error);
@@ -22,7 +30,7 @@ export class RegistrationComponent implements OnInit {
       complete: () => {
         console.log('complete');
       },
-  });
+    });
   }
 
   hide = true;
@@ -33,7 +41,7 @@ export class RegistrationComponent implements OnInit {
 
   registerstatus: RegisterStatus = RegisterStatus.Initial;
   attempts: number = 0;
-  teams: any = [];
+  teams: Array<string | number> = [];
 
   team: number | undefined;
   password: string | undefined;
@@ -48,12 +56,13 @@ export class RegistrationComponent implements OnInit {
   async register() {
     this.attempts++;
     this.registerstatus = RegisterStatus.Loading;
+    console.log(this.team);
     this.http
       .post<RegisterResponse>(
-        'http://localhost:3000/register',
+        'http://127.0.0.1:5000/api/register',
         {
-          team: this.team,
           password: this.password,
+          team: this.team,
         },
         this.httpOptions
       )
@@ -72,8 +81,12 @@ export class RegistrationComponent implements OnInit {
           }
         },
         complete: () => {
-          console.log('login complete');
+          console.log('register complete');
           this.registerstatus = RegisterStatus.Success;
+          this.router.navigate([
+            '/profile',
+            sessionStorage.getItem('loginName'),
+          ]);
         },
       });
   }

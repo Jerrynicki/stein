@@ -30,7 +30,7 @@
 
   <button mat-stroked-button (click)="login()">Anmelden</button>
 
-  <div class="loading" *ngIf="loginstatus == 'Loading'" >
+  <div class="loading" *ngIf="loginstatus == 'Loading'">
     <mat-progress-spinner
       [color]="color"
       [mode]="mode"
@@ -39,8 +39,13 @@
     >
     </mat-progress-spinner>
   </div>
+
   <p *ngIf="loginstatus == 'Fail'">
     Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.
+  </p>
+
+  <p *ngIf="loginstatus == 'Error'">
+    There was an error. Please contact an administrator.
   </p>
 
   <div class="links">

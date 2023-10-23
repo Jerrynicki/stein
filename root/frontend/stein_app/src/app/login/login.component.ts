@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { LoginResponse, LoginStatus } from './login.interface';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -10,7 +11,7 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
 
   hide = true;
   color: ThemePalette = 'warn';
@@ -36,7 +37,7 @@ export class LoginComponent {
     this.loginstatus = LoginStatus.Loading;
     this.http
       .post<LoginResponse>(
-        'http://localhost:3000/login',
+        'http://127.0.0.1:5000/api/login',
         {
           username: this.username,
           password: this.password,
@@ -62,8 +63,9 @@ export class LoginComponent {
         complete: () => {
           console.log('login complete');
           this.loginstatus = LoginStatus.Success;
+          this.router.navigate(['/profile', this.username]);
         },
-      })
+      });
   }
 
   expiretime(expiry: number) {
