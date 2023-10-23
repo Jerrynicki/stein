@@ -45,6 +45,9 @@ paths:
                     type: boolean
                   banned:
                     type: boolean
+                  team:
+                    type: number
+                    description: The team id the user is in
         '404':
           description: Not Found
   "/profile/posts":
@@ -167,6 +170,23 @@ paths:
           description: OK
         '401':
           description: Unauthorized
+    delete:
+      tags:
+      - Post
+      summary: Delete a post
+      parameters:
+      - name: id
+        in: query
+        description: Post id
+        schema:
+          type: number
+      responses:
+        '200':
+          description: Post deleted
+        '401':
+          description: Not your post / not an admin
+        '404':
+          description: Post not found
     get:
       tags:
       - Post
