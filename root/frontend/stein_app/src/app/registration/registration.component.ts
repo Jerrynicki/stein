@@ -18,7 +18,7 @@ export class RegistrationComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.http.get<TeamResponse[]>('http://127.0.0.1:5000/api/teams').subscribe({
+    this.http.get<TeamResponse[]>('/api/teams').subscribe({
       next: (response) => {
         response.forEach((index) => {
           this.teams.push(index.name);

@@ -32,7 +32,7 @@ export class HomeComponent implements OnInit {
   async getPosts(lat: number, lng: number, page: number) {
     this.http
       .get<PostInterface[]>(
-        'http://127.0.0.1:5000/api/posts?page=' +
+        '/api/posts?page=' +
           page +
           '&location_lat=' +
           lat +
