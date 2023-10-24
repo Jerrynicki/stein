@@ -1,0 +1,7 @@
+<mat-list>
+  <mat-list-item>
+    <span matListItemTitle> {{comment.author}} </span>
+    <span matListItemLine> {{comment.comment}} </span>
+    <p-rating matListItemLine [(ngModel)]="comment.rating"  [cancel]="false" [readonly]="true"></p-rating>
+  </mat-list-item>
+</mat-list>

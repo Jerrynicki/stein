@@ -1,0 +1,26 @@
+<mat-card class="card">
+  <mat-card-header>
+    <mat-card-title (click)="goToProfile(post.author)">
+      {{ post.author }}
+    </mat-card-title>
+    <mat-card-subtitle *ngIf="distance">
+      {{ formatDistance(post.distance) + " von dir Entfernt" }}
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content>
+    <img
+      mat-card-image
+      style="max-width: 100%"
+      (click)="goToPost(post.id)"
+      [src]="api + post.images[0].url"
+      alt="alt text in current version not supported"
+    />
+  </mat-card-content>
+
+  <mat-card-actions *ngIf="(post.author == this.username)  && delete">
+    <button mat-stroked-button color="warn" (click)="deletePost()">
+      LÖSCHEN (in current version not supported)
+    </button>
+  </mat-card-actions>
+</mat-card>

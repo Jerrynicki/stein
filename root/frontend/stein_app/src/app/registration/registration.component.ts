@@ -1,8 +1,14 @@
 import { Component, OnInit } from '@angular/core';
-import { RegisterResponse, RegisterStatus } from './register.interface';
+import {
+  RegisterResponse,
+  RegisterStatus,
+  TeamResponse,
+} from './register.interface';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
+import { Router } from '@angular/router';
+import { TeamInterface } from './team.interface';
 
 @Component({
   selector: 'app-registration',
@@ -10,9 +16,10 @@ import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent implements OnInit {
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router) {}
+
   ngOnInit(): void {
-    this.http.get('http://localhost:3000/teams').subscribe({
+    this.http.get<TeamInterface[]>('/api/teams').subscribe({
       next: (response) => {
         this.teams = response;
       },
@@ -22,7 +29,7 @@ export class RegistrationComponent implements OnInit {
       complete: () => {
         console.log('complete');
       },
-  });
+    });
   }
 
   hide = true;
@@ -33,9 +40,9 @@ export class RegistrationComponent implements OnInit {
 
   registerstatus: RegisterStatus = RegisterStatus.Initial;
   attempts: number = 0;
-  teams: any = [];
+  teams!: TeamInterface[];
 
-  team: number | undefined;
+  team!: number;
   password: string | undefined;
 
   httpOptions = {
@@ -48,12 +55,13 @@ export class RegistrationComponent implements OnInit {
   async register() {
     this.attempts++;
     this.registerstatus = RegisterStatus.Loading;
+    console.log(this.team);
     this.http
       .post<RegisterResponse>(
-        'http://localhost:3000/register',
+        '/api/register',
         {
-          team: this.team,
           password: this.password,
+          team: this.team,
         },
         this.httpOptions
       )
@@ -61,7 +69,7 @@ export class RegistrationComponent implements OnInit {
         next: (response) => {
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('expiry', this.expiretime(response.expiry));
-          sessionStorage.setItem('loginName', response.username);
+          sessionStorage.setItem('username', response.username);
         },
         error: (error) => {
           console.error(error);
@@ -72,8 +80,12 @@ export class RegistrationComponent implements OnInit {
           }
         },
         complete: () => {
-          console.log('login complete');
           this.registerstatus = RegisterStatus.Success;
+          sessionStorage.setItem('login', 'true')
+          this.router.navigate([
+            '/profile',
+            sessionStorage.getItem('username'),
+          ]);
         },
       });
   }

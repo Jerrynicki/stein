@@ -1,3 +1,5 @@
+<app-toolbar></app-toolbar>
+
 <form autocomplete="off" class="form">
   <div>
     <h1>Anmeldung</h1>
@@ -30,7 +32,7 @@
 
   <button mat-stroked-button (click)="login()">Anmelden</button>
 
-  <div class="loading" *ngIf="loginstatus == 'Loading'" >
+  <div class="loading" *ngIf="loginstatus == 'Loading'">
     <mat-progress-spinner
       [color]="color"
       [mode]="mode"
@@ -39,12 +41,17 @@
     >
     </mat-progress-spinner>
   </div>
+
   <p *ngIf="loginstatus == 'Fail'">
     Login fehlgeschlagen. Bitte überprüfen Sie Ihre Anmeldedaten.
   </p>
 
+  <p *ngIf="loginstatus == 'Error'">
+    There was an error. Please contact an administrator.
+  </p>
+
   <div class="links">
-    <a href="#">Passwort vergessen?</a>
-    <a href="registration">Registrieren</a>
+    <a routerLink="/" routerLinkActive="active">Passwort vergessen?</a>
+    <a routerLink="/registration" routerLinkActive="active">Registrieren</a>
   </div>
 </form>

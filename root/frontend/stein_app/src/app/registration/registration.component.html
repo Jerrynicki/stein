@@ -1,3 +1,5 @@
+<app-toolbar></app-toolbar>
+
 <form autocomplete="off" class="form">
   <div>
     <h1>Registrierung</h1>
@@ -5,8 +7,12 @@
 
   <mat-form-field appearance="outline">
     <!-- <mat-label>Username</mat-label> -->
-    <mat-select [(value)]="team">
-      <mat-option *ngFor="let team of teams; index as i; first as isFirst" value="team.id">{{team.name}}</mat-option>
+    <mat-select [(ngModel)]="team" [ngModelOptions]="{ standalone: true }">
+      <mat-option
+        *ngFor="let team of teams;"
+        [value]="team.id"
+        >{{ team.name }}</mat-option
+      >
     </mat-select>
   </mat-form-field>
 
@@ -34,12 +40,16 @@
     >
     </mat-progress-spinner>
   </div>
+
   <p *ngIf="registerstatus == 'Fail'">
     Registrierung fehlgeschlagen. Bitte versuchen sie es später noch einmal.
   </p>
 
+  <p *ngIf="registerstatus == 'Error'">
+    There was an error. Please contact an administrator.
+  </p>
+
   <div class="links">
-    <a href="#">Passwort vergessen?</a>
-    <a href="login">Anmelden</a>
+    <a routerLink="/login" routerLinkActive="active">Anmelden</a>
   </div>
 </form>
