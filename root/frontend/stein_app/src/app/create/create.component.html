@@ -24,6 +24,15 @@
       <input type="text" pInputText placeholder="Koordiinate: Latitude" [(ngModel)]="lat" [disabled]="!manualcoords" />
       <input type="text" pInputText placeholder="Koordinaten: Longitude" [(ngModel)]="lng" [disabled]="!manualcoords"/>
       <button mat-stroked-button [disabled]="!imageaccept || buttonpressed" (click)="createPost()"> POSTEN </button>
+      <div class="loading" *ngIf="loading">
+        <mat-progress-spinner
+          [color]="color"
+          [mode]="mode"
+          [value]="value"
+          [diameter]="diameter"
+        >
+        </mat-progress-spinner>
+      </div>
     </div>
   </div>
 </div>

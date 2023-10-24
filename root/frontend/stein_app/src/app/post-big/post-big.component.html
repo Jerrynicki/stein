@@ -11,12 +11,16 @@
     <p-rating [(ngModel)]="post.rating" [cancel]="false" [readonly]="true"></p-rating>
   </div>
 
-  <div class="creator">
+  <div class="creator" *ngIf="login">
     <h2>Kommentar verfassen:</h2>
     <p>Kommentare dürfen nur aus max. 3 Emojis bestehen.</p>
     <input type="text" pInputText placeholder="Kommentar" [(ngModel)]="comment.comment"/>
     <p-rating [(ngModel)]="comment.rating" [cancel]="false"></p-rating>
     <button mat-stroked-button type="button" (click)="createComment()" [disabled]="commentCompleted">Kommentieren</button>
+  </div>
+  <div class="creator" *ngIf="!login">
+    <h2>Kommentar verfassen:</h2>
+    <p>Kommentare dürfen können nur angemeldet verfasst werden.</p>
   </div>
 
   <div class="comments" *ngIf="commentsCompleted == true">

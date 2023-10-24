@@ -33,6 +33,7 @@ export class PostBigComponent {
   commentsCompleted: boolean = false;
   commentCompleted: boolean = false;
   username = sessionStorage.getItem('username');
+  login = sessionStorage.getItem('login')
   api: string = '';
 
   httpOptions = {

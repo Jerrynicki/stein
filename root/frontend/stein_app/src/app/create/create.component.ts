@@ -3,6 +3,8 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { GeolocationService } from '@ng-web-apis/geolocation';
 import { CreateInterface } from './create.interface';
+import { ThemePalette } from '@angular/material/core';
+import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 
 @Component({
   selector: 'app-create',
@@ -27,7 +29,14 @@ export class CreateComponent implements OnInit {
     });
   }
 
+  hide = true;
+  color: ThemePalette = 'warn';
+  mode: ProgressSpinnerMode = 'indeterminate';
+  value = 50;
+  diameter = 50;
+
   login: boolean = false;
+  loading: boolean = false;
   imageaccept: boolean = false;
   manualcoords: boolean =false;
   buttonpressed: boolean = false;
@@ -76,6 +85,7 @@ export class CreateComponent implements OnInit {
 
   async createPost() {
     this.buttonpressed = true
+    this.loading = true
     const b64formatted = this.b64.split(',')[1];
     console.log(b64formatted);
     this.http
@@ -100,6 +110,7 @@ export class CreateComponent implements OnInit {
         },
         complete: () => {
           this.buttonpressed = false
+          this.loading = false
           this.router.navigate([
             '/post',
             this.id,
