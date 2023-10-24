@@ -15,7 +15,6 @@ from app.extensions import db
 @bp.route("/")
 @bp.route("/<path:path>")
 def frontend(path="index.html"):
-    path = "index.html"
     return flask.send_from_directory(
         os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../../../../frontend/stein_app/dist/stein_app")),
         path
