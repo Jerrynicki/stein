@@ -8,6 +8,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ThemePalette } from '@angular/material/core';
 import { ProgressSpinnerMode } from '@angular/material/progress-spinner';
 import { Router } from '@angular/router';
+import { TeamInterface } from './team.interface';
 
 @Component({
   selector: 'app-registration',
@@ -18,11 +19,9 @@ export class RegistrationComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router) {}
 
   ngOnInit(): void {
-    this.http.get<TeamResponse[]>('/api/teams').subscribe({
+    this.http.get<TeamInterface[]>('/api/teams').subscribe({
       next: (response) => {
-        response.forEach((index) => {
-          this.teams.push(index.name);
-        });
+        this.teams = response;
       },
       error: (error) => {
         console.error(error);
@@ -41,9 +40,9 @@ export class RegistrationComponent implements OnInit {
 
   registerstatus: RegisterStatus = RegisterStatus.Initial;
   attempts: number = 0;
-  teams: Array<string | number> = [];
+  teams!: TeamInterface[];
 
-  team: number | undefined;
+  team!: number;
   password: string | undefined;
 
   httpOptions = {
