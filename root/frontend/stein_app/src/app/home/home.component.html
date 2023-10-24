@@ -2,7 +2,7 @@
 
   <app-toolbar></app-toolbar>
 
-  <div class="posts" >
+  <div class="posts" *ngIf="completed == true">
     <app-post-small
       class="post"
       *ngFor="let post of posts; index as i; first as isFirst"

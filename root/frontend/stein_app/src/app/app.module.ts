@@ -30,6 +30,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
 import { SidebarModule } from 'primeng/sidebar';
 import { AvatarModule } from 'primeng/avatar';
+import { InputSwitchModule } from 'primeng/inputswitch';
 import { CreateComponent } from './create/create.component';
 import { ImpressumComponent } from './impressum/impressum.component';
 import { PostBigComponent } from './post-big/post-big.component';
@@ -75,6 +76,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     InputTextModule,
     ImageModule,
     AvatarModule,
+    InputSwitchModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

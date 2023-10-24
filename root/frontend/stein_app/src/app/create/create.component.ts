@@ -29,6 +29,8 @@ export class CreateComponent implements OnInit {
 
   login: boolean = false;
   imageaccept: boolean = false;
+  manualcoords: boolean =false;
+  buttonpressed: boolean = false;
   uploadedFile: any;
   lat: number = 0;
   lng: number = 0;
@@ -73,6 +75,7 @@ export class CreateComponent implements OnInit {
   }
 
   async createPost() {
+    this.buttonpressed = true
     const b64formatted = this.b64.split(',')[1];
     console.log(b64formatted);
     this.http
@@ -96,11 +99,24 @@ export class CreateComponent implements OnInit {
           }
         },
         complete: () => {
+          this.buttonpressed = false
           this.router.navigate([
             '/post',
             this.id,
           ]);
         },
       });
+  }
+
+  manualCoords(){
+    if (this.manualcoords) {
+      this.lat = 0
+      this.lng = 0
+    } else {
+      this.geolocation.subscribe((position) => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+      });
+    }
   }
 }

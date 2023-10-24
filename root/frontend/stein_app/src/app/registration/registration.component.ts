@@ -80,8 +80,8 @@ export class RegistrationComponent implements OnInit {
           }
         },
         complete: () => {
-          console.log('register complete');
           this.registerstatus = RegisterStatus.Success;
+          sessionStorage.setItem('login', 'true')
           this.router.navigate([
             '/profile',
             sessionStorage.getItem('username'),

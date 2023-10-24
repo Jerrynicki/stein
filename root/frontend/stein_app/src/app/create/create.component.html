@@ -12,14 +12,18 @@
     <h1>Stein posten</h1>
     <p>
       Bitte Poste nur STEINE! Etwas anderes zu Posten resultiert in einer
-      Löschung des Posts sowie einem möglichen Bann.
+      Löschung des Posts sowie einem möglichen Bann. 
     </p>
     <p>
       Es werden nur Bilder im Querformat akzeptiert.
     </p>
     <div class="upload">
       <input type="file" accept="image/*" (change)="onUpload($event)">
-      <button mat-stroked-button [disabled]="!imageaccept" (click)="createPost()"> POSTEN </button>
+      <p>Koordinaten manuell eingeben:</p>
+      <p-inputSwitch [(ngModel)]="manualcoords" (onChange)="manualCoords()"></p-inputSwitch>
+      <input type="text" pInputText placeholder="Koordiinate: Latitude" [(ngModel)]="lat" [disabled]="!manualcoords" />
+      <input type="text" pInputText placeholder="Koordinaten: Longitude" [(ngModel)]="lng" [disabled]="!manualcoords"/>
+      <button mat-stroked-button [disabled]="!imageaccept || buttonpressed" (click)="createPost()"> POSTEN </button>
     </div>
   </div>
 </div>
