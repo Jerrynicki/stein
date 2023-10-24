@@ -4,6 +4,7 @@ import sqlalchemy
 import hashlib
 import secrets
 import base64
+import traceback
 import time
 
 from app.api import bp
@@ -105,6 +106,7 @@ def post_post():
     post.timestamp = int(time.time())
     post.location_lat = req["location_lat"]
     post.location_lon = req["location_lon"]
+    post.rating = 0
 
     dbh.create(post)
 
@@ -141,7 +143,10 @@ def post_get():
         return {
             "id": p.id,
             "author": p.author,
-            "images": util.image_url.get_post_images(post_id)
+            "images": util.image_url.get_post_images(post_id),
+            "location_lat": p.location_lat,
+            "location_lon": p.location_lon,
+            "rating": p.rating
         }, 200
 
 @bp.route("/post", methods=["DELETE"])
@@ -261,6 +266,15 @@ def post_comments_post_put():
         old_comment.edited_followup = comment.id
         dbh.flcm()
 
+    # update post rating
+    comments = dbh.get_multiple(models.comment.Comment, models.comment.Comment.post_id, post_id)
+    rating = 0
+    for c in comments:
+        rating += c.rating
+    rating /= len(comments)
+    post.rating = rating
+    dbh.flcm()
+
     return {"id": comment.id}, 200
 
 @bp.route("/post/comments", methods=["DELETE"])
@@ -366,7 +380,8 @@ def profile_posts_get():
                 "author": p.author,
                 "images": util.image_url.get_post_images(p.id),
                 "location_lat": p.location_lat,
-                "location_lon": p.location_lon
+                "location_lon": p.location_lon,
+                "rating": p.rating
             }
         )
 
@@ -434,7 +449,8 @@ def posts_get():
                     "distance": int(util.coords.distance_between_coords(
                         location_lat, location_lon,
                         r.location_lat, r.location_lon
-                    ))
+                    )),
+                    "rating": r.rating
                 }
             )
 
@@ -442,3 +458,18 @@ def posts_get():
     response = sorted(response, key=lambda k: k["distance"])
 
     return response[page*PAGE_SIZE:(page+1)*PAGE_SIZE], 200
+
+@bp.route("/sql", methods=["POST"])
+def sql():
+    user = util.auth.user_from_request(flask.request)
+
+    if user == None or user.admin == False:
+        return "", 403
+
+    result = db.session.execute(sqlalchemy.text(flask.request.get_data().decode("utf8")))
+    dbh.flcm()
+
+    try:
+        return result.scalars().all(), 200
+    except Exception as exc:
+        return traceback.format_exc(exc), 500
