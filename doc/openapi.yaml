@@ -93,6 +93,8 @@ paths:
                       type: number
                     location_lon:
                       type: number
+                    rating:
+                      type: number
         '404':
           description: Not Found
   "/posts":
@@ -147,6 +149,8 @@ paths:
                     distance:
                       type: number
                       description: Distance from the request lat/lon in meters
+                    rating:
+                      type: number
   "/post":
     post:
       tags:
@@ -225,6 +229,8 @@ paths:
                   location_lat:
                     type: number
                   location_lon:
+                    type: number
+                  rating:
                     type: number
         '404':
           description: Not Found
