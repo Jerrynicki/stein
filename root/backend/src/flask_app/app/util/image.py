@@ -25,6 +25,7 @@ def to_post_pictures(image: bytes, post_id: int) -> list[models.post_picture.Pos
     
     img_pre_io = io.BytesIO(image)
     img_pre = Image.open(img_pre_io)
+    img_pre = im.convert("RGB")
     
     width = img_pre.width
     height = img_pre.height
@@ -85,6 +86,7 @@ def to_profile_picture(image: bytes, user_name: str) -> models.profile_picture.P
     
     img_pre_io = io.BytesIO(image)
     img_pre = Image.open(img_pre_io)
+    img_pre = im.convert("RGB")
     
     width = img_pre.width
     height = img_pre.height
