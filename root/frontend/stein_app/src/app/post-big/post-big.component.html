@@ -1,0 +1,25 @@
+<app-toolbar></app-toolbar>
+
+<div class="container loaded" *ngIf="postCompleted == true">
+  <div class="author">
+    <h1>Autor*in: {{ post.author }}</h1>
+    <!-- <p>{{ distance(post.distance) + " von dir Entfernt" }}</p> -->
+  </div>
+
+  <div class="image">
+    <p-image [src]="api + post.images[1].url" alt="alt text in current version not supported" width="100%" [preview]="true"></p-image>
+  </div>
+
+  <div class="creator">
+    <h2>Kommentar verfassen:</h2>
+    <p>Kommentare dürfen nur aus max. 3 Emojis bestehen.</p>
+    <input type="text" pInputText placeholder="Kommentar" [(ngModel)]="comment.comment"/>
+    <p-rating [(ngModel)]="comment.rating" [cancel]="false"></p-rating>
+    <button mat-stroked-button type="button" (click)="createComment()">Kommentieren</button>
+  </div>
+
+  <div class="comments" *ngIf="commentsCompleted == true">
+    <h2>Kommentare:</h2>
+    <app-comment *ngFor="let comment of comments" [comment]="comment"></app-comment>
+  </div>
+</div>

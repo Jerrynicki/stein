@@ -1,0 +1,18 @@
+.support {
+  margin-top: 74px;
+  margin-bottom: 20px;
+  text-align: left;
+  padding: 0 20px;
+  .p {
+    margin: 0;
+    text-indent: 2em;
+  }
+  h2 {
+    color: red;
+  }
+}
+
+.support-container {
+  display: flex;
+  justify-content: center;
+}

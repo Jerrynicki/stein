@@ -23,7 +23,19 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { CommentComponent } from './comment/comment.component';
 
+import { DividerModule } from 'primeng/divider';
+import { FileUploadModule } from 'primeng/fileupload';
+import { ImageModule } from 'primeng/image';
+import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
+import { SidebarModule } from 'primeng/sidebar';
+import { AvatarModule } from 'primeng/avatar';
+import { CreateComponent } from './create/create.component';
+import { ImpressumComponent } from './impressum/impressum.component';
+import { PostBigComponent } from './post-big/post-big.component';
+import { ProfileComponent } from './profile/profile.component';
+import { SupportComponent } from './support/support.component';
+import { ToolbarComponent } from './toolbar/toolbar.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +45,12 @@ import { RatingModule } from 'primeng/rating';
     PostSmallComponent,
     HomeComponent,
     CommentComponent,
+    ProfileComponent,
+    PostBigComponent,
+    SupportComponent,
+    ImpressumComponent,
+    CreateComponent,
+    ToolbarComponent,
   ],
   imports: [
     BrowserModule,
@@ -51,6 +69,12 @@ import { RatingModule } from 'primeng/rating';
     MatSidenavModule,
     MatListModule,
     RatingModule,
+    SidebarModule,
+    DividerModule,
+    FileUploadModule,
+    InputTextModule,
+    ImageModule,
+    AvatarModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

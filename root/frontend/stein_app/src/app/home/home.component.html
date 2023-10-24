@@ -1,21 +1,37 @@
-<div class="container">
-  <mat-toolbar class="toolbar" color="primary">
-    <h1>Styn</h1>
-    <span class="spacer"></span>
-    <button mat-icon-button>
-      <mat-icon>home</mat-icon>
-    </button>
-    <button mat-icon-button>
-      <mat-icon>menu</mat-icon>
-    </button>
-  </mat-toolbar>
-</div>
+<div>
 
-<div class="posts" *ngIf="completed == true">
-  <app-post-small
-    class="post"
-    *ngFor="let post of posts; index as i; first as isFirst"
-    [post]="post"
-    [delete]="false"
-  ></app-post-small>
+  <app-toolbar></app-toolbar>
+
+  <div class="posts" *ngIf="completed == true">
+    <app-post-small
+      class="post"
+      *ngFor="let post of posts; index as i; first as isFirst"
+      [post]="post"
+      [delete]="false"
+      [distance]="true"
+    ></app-post-small>
+
+    <div class="pages">
+      <button
+        mat-fab
+        extended
+        class="button"
+        color="primary"
+        (click)="pageChange(-1)"
+      >
+        <mat-icon>arrow_back</mat-icon>
+        Zurück
+      </button>
+      <button
+        mat-fab
+        extended
+        class="button"
+        color="primary"
+        (click)="pageChange(1)"
+      >
+        Weiter
+        <mat-icon>arrow_forward</mat-icon>
+      </button>
+    </div>
+  </div>
 </div>

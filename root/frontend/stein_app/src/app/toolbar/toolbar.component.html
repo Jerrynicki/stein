@@ -1,0 +1,64 @@
+<p-sidebar class="sidebar" [(visible)]="sidebarVisible" position="right">
+  <ng-template pTemplate="header"><h1>Styn</h1></ng-template>
+  <ng-template pTemplate="content">
+    <div class="sidebarContentContianer">
+      <div class="sidebarItem" *ngIf="login == true" (click)="route('profile')">
+        <div class="icon-text">
+          <mat-icon>account_circle</mat-icon>
+          Profil
+        </div>
+        <p-divider></p-divider>
+      </div>
+      <div class="sidebarItem" *ngIf="login == false" (click)="route('login')">
+        <div class="icon-text">
+          <mat-icon>account_circle</mat-icon>
+          Anmelden/Registrieren
+        </div>
+        <p-divider></p-divider>
+      </div>
+      <div class="sidebarItem" *ngIf="login == true" (click)="route('create')">
+        <div class="icon-text">
+          <mat-icon>photo_camera</mat-icon>
+          Stein posten
+        </div>
+        <p-divider></p-divider>
+      </div>
+      <div class="sidebarItem" (click)="route('impressum')">
+        <div class="icon-text">
+          <mat-icon>business</mat-icon>
+          Impressum
+        </div>
+        <p-divider></p-divider>
+      </div>
+      <div class="sidebarItem" (click)="route('support')">
+        <div class="icon-text">
+          <mat-icon>help_outline</mat-icon>
+          Support
+        </div>
+        <p-divider></p-divider>
+      </div>
+      <div class="sidebarItem" *ngIf="login == true" (click)="logout()">
+        <div class="icon-text">
+          <mat-icon>lock</mat-icon>
+          Abmelden
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="footer">
+    Dies ist ein footer. Hier gibts aktuell nichts interessantes :)
+  </ng-template>
+</p-sidebar>
+
+<div class="toolbar-container">
+  <mat-toolbar class="toolbar" color="primary">
+    <h1>Styn</h1>
+    <span class="toolbar-spacer"></span>
+    <button mat-icon-button (click)="route('')">
+      <mat-icon>home</mat-icon>
+    </button>
+    <button mat-icon-button (click)="sidebarVisible = true">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </mat-toolbar>
+</div>

@@ -13,8 +13,9 @@ export class PostSmallComponent {
 
   @Input() post!: PostInterface;
   @Input() delete!: boolean;
+  @Input() distance!: boolean;
 
-  loginName = sessionStorage.getItem('loginName');
+  username = sessionStorage.getItem('username');
   api = 'http://127.0.0.1:5000';
 
   goToPost(id: number) {
@@ -29,7 +30,7 @@ export class PostSmallComponent {
     return;
   }
 
-  distance(meters: number) {
+  formatDistance(meters: number) {
     if (meters < 1000) {
       return meters + 'm';
     } else {

@@ -1,0 +1,32 @@
+.toolbar {
+  position: fixed;
+  z-index: 2;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #1b1b1b;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+
+  .toolbar-spacer {
+    flex: 1 1 auto;
+  }
+}
+
+.sidebar {
+  z-index: 10000;
+}
+
+.sidebarItem {
+  display: flex;
+  flex-direction: column;
+
+  .icon-text {
+    display: flex;
+    align-items: center;
+
+    .mat-icon {
+      margin-right: 8px;
+    }
+  }
+}
