@@ -49,7 +49,9 @@ export class LoginComponent {
           if (this.username) {
             sessionStorage.setItem('token', response.token);
             sessionStorage.setItem('expiry', this.expiretime(response.expiry));
-            sessionStorage.setItem('loginName', this.username);
+            sessionStorage.setItem('username', this.username);
+            sessionStorage.setItem('admin', response.admin.toString());
+            sessionStorage.setItem('banned', response.banned.toString());
           }
         },
         error: (error) => {
@@ -61,7 +63,7 @@ export class LoginComponent {
           }
         },
         complete: () => {
-          console.log('login complete');
+          sessionStorage.setItem('login', 'true');
           this.loginstatus = LoginStatus.Success;
           this.router.navigate(['/profile', this.username]);
         },

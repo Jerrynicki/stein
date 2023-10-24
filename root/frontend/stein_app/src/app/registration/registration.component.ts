@@ -59,7 +59,7 @@ export class RegistrationComponent implements OnInit {
     console.log(this.team);
     this.http
       .post<RegisterResponse>(
-        'http://127.0.0.1:5000/api/register',
+        '/api/register',
         {
           password: this.password,
           team: this.team,

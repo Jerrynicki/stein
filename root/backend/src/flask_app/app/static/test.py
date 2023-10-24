@@ -1,6 +1,6 @@
 import requests
 
-token = "0bfe45829be0cecbf9289e6d4286372474ad"
+token = "e0df0631c7b92864db7bceab1c3f5f91f43b"
 img = open("an image.png.b64", "r").read()
 
 a = input()
