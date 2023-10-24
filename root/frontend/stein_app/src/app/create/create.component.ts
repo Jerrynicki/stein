@@ -42,8 +42,8 @@ export class CreateComponent implements OnInit {
   manualcoords: boolean =false;
   buttonpressed: boolean = false;
   uploadedFile: any;
-  lat: number = 0;
-  lng: number = 0;
+  lat: number | string = 0;
+  lng: number | string = 0;
   b64: string = '';
   id: number = 0;
 
@@ -89,6 +89,10 @@ export class CreateComponent implements OnInit {
     this.loading = true
     const b64formatted = this.b64.split(',')[1];
     console.log(b64formatted);
+    if (typeof this.lat === 'string' && typeof this.lng === 'string') {
+      this.lat = parseInt(this.lat, 10)
+      this.lng = parseInt(this.lng, 10)
+    }
     this.http
       .post<{id: number}>(
         '/api/post',
