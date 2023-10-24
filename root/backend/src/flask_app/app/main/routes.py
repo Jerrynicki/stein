@@ -16,13 +16,16 @@ from app.extensions import db
 @bp.route("/")
 @bp.route("/<path:path>")
 def frontend(path="index.html"):
-    result = flask.send_from_directory(
-        os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../../../../frontend/stein_app/dist/stein_app")),
-        path
-    )
-    if result.status_code == 404:
+    frontend_path = os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../../../../frontend/stein_app/dist/stein_app"))
+
+    if os.path.exists(os.path.join(frontend_path, path)):
         result = flask.send_from_directory(
-            os.path.normpath(os.path.join(os.path.dirname(os.path.realpath(__file__)), "../../../../../frontend/stein_app/dist/stein_app")),
+            frontend_path,
+            path
+        )
+    else:
+        result = flask.send_from_directory(
+            frontend_path,
             "index.html"
         )
 
