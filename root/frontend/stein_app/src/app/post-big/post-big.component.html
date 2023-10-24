@@ -7,7 +7,7 @@
   </div>
 
   <div class="image">
-    <p-image [src]="api + post.images[1].url" alt="alt text in current version not supported" width="100%" [preview]="true"></p-image>
+    <p-image [src]="api + post.images.slice(-1)[0].url" alt="alt text in current version not supported" width="100%" [preview]="true"></p-image>
   </div>
 
   <div class="creator">

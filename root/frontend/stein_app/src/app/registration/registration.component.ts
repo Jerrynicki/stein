@@ -70,7 +70,7 @@ export class RegistrationComponent implements OnInit {
         next: (response) => {
           sessionStorage.setItem('token', response.token);
           sessionStorage.setItem('expiry', this.expiretime(response.expiry));
-          sessionStorage.setItem('loginName', response.username);
+          sessionStorage.setItem('username', response.username);
         },
         error: (error) => {
           console.error(error);
@@ -85,7 +85,7 @@ export class RegistrationComponent implements OnInit {
           this.registerstatus = RegisterStatus.Success;
           this.router.navigate([
             '/profile',
-            sessionStorage.getItem('loginName'),
+            sessionStorage.getItem('username'),
           ]);
         },
       });
