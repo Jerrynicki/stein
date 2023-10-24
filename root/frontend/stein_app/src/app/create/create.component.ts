@@ -22,11 +22,12 @@ export class CreateComponent implements OnInit {
     sessionStorage.getItem('login') == 'true'
       ? (this.login = true)
       : (this.login = false);
-
-    this.geolocation.subscribe((position) => {
-      this.lat = position.coords.latitude;
-      this.lng = position.coords.longitude;
-    });
+    if (!this.manualcoords) {
+      this.geolocation.subscribe((position) => {
+        this.lat = position.coords.latitude;
+        this.lng = position.coords.longitude;
+      });
+    }
   }
 
   hide = true;
