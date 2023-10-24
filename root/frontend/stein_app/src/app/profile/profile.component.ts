@@ -22,7 +22,7 @@ export class ProfileComponent {
   profileCompleted: boolean = false;
   postsCompleted: boolean = false;
   username = sessionStorage.getItem('username');
-  api: string = 'http://127.0.0.1:5000';
+  api: string = '';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -39,7 +39,7 @@ export class ProfileComponent {
   async getProfile(name: string) {
     this.http
       .get<ProfileInterface>(
-        'http://127.0.0.1:5000/api/profile?name=' + name,
+        '/api/profile?name=' + name,
         this.httpOptions
       )
       .subscribe({
@@ -59,7 +59,7 @@ export class ProfileComponent {
   async getPosts(name: string) {
     this.http
       .get<PostInterface[]>(
-        'http://127.0.0.1:5000/api/profile/posts?name=' + name + '&page=' + 0,
+        '/api/profile/posts?name=' + name + '&page=' + 0,
         this.httpOptions
       )
       .subscribe({

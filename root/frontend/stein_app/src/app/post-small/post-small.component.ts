@@ -16,7 +16,7 @@ export class PostSmallComponent {
   @Input() distance!: boolean;
 
   username = sessionStorage.getItem('username');
-  api = 'http://127.0.0.1:5000';
+  api = '';
 
   goToPost(id: number) {
     this.router.navigate(['/post', id]);

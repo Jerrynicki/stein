@@ -77,7 +77,7 @@ export class CreateComponent implements OnInit {
     console.log(b64formatted);
     this.http
       .post<{id: number}>(
-        'http://localhost:5000/api/post',
+        '/api/post',
         {
           location_lat: this.lat,
           location_lon: this.lng,

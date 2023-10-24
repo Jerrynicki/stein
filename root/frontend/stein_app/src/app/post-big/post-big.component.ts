@@ -32,7 +32,7 @@ export class PostBigComponent {
   postCompleted: boolean = false;
   commentsCompleted: boolean = false;
   username = sessionStorage.getItem('username');
-  api: string = 'http://127.0.0.1:5000';
+  api: string = '';
 
   httpOptions = {
     headers: new HttpHeaders({
@@ -49,7 +49,7 @@ export class PostBigComponent {
   async getPost(id: number) {
     this.http
       .get<PostInterface>(
-        'http://127.0.0.1:5000/api/post?id=' + id,
+        '/api/post?id=' + id,
         this.httpOptions
       )
       .subscribe({
@@ -68,7 +68,7 @@ export class PostBigComponent {
   async getComments(id: number) {
     this.http
       .get<CommentInterface[]>(
-        'http://127.0.0.1:5000/api/post/comments?id=' + id,
+        '/api/post/comments?id=' + id,
         this.httpOptions
       )
       .subscribe({
@@ -91,7 +91,7 @@ export class PostBigComponent {
     });
     this.http
       .post<any>(
-        'http://127.0.0.1:5000/api/post/comments?id=' + this.id,
+        '/api/post/comments?id=' + this.id,
         {
           location_lon: this.comment.lng,
           location_lat: this.comment.lat,
