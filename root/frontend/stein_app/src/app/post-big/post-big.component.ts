@@ -31,6 +31,7 @@ export class PostBigComponent {
   emojiRegex = /[^\u{1F600}-\u{1F64F}]+/gu;
   postCompleted: boolean = false;
   commentsCompleted: boolean = false;
+  commentCompleted: boolean = false;
   username = sessionStorage.getItem('username');
   api: string = '';
 
@@ -86,6 +87,7 @@ export class PostBigComponent {
   }
 
   async createComment() {
+    this.commentCompleted = true;
     this.geolocation.subscribe((position) => {
       this.comment.lat = position.coords.latitude;
       this.comment.lng = position.coords.longitude;
@@ -109,7 +111,9 @@ export class PostBigComponent {
           } else {
           }
         },
-        complete: () => {},
+        complete: () => {
+          this.commentCompleted = false;
+        },
       });
   }
 
