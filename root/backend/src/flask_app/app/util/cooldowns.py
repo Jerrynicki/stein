@@ -56,7 +56,9 @@ def cooldown(cost):
             result = f(*args, **kwargs)
 
             response = flask.make_response(result)
-            response.headers.add("X-Requests-Remaining", str(MAX_REQUESTS - cooldowns[addr]["__total__"]["num"]))
+
+            if ENABLE_COOLDOWNS:
+                response.headers.add("X-Requests-Remaining", str(MAX_REQUESTS - cooldowns[addr]["__total__"]["num"]))
 
             return response
 
