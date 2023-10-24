@@ -247,7 +247,20 @@ def post_comments_post_put():
     if flask.request.method == "POST":
         comment.location_lat = req["location_lat"]
         comment.location_lon = req["location_lon"]
-        dbh.create(comment)
+
+        existing_comment = db.session.execute(
+            sqlalchemy.select(
+                models.comment.Comment
+            ).where(
+                models.comment.Comment.post_id == post_id,
+                models.comment.Comment.author == author.name
+            )
+        ).scalar_one_or_none()
+
+        if existing_comment is None:
+            dbh.create(comment)
+        else:
+            return "You've already posted a comment under this post", 409
     if flask.request.method == "PUT":
         # set the old comment to status edited with a reference to the new comment
         old_comment = dbh.get(models.comment.Comment, models.comment.Comment.id, req["id"])

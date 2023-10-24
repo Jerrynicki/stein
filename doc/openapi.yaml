@@ -309,6 +309,8 @@ paths:
                   id:
                     type: number
                     description: The posted comment's id in relation to the post id
+        '409':
+          description: You've already posted a comment
         '404':
           description: Post not found
     put:
