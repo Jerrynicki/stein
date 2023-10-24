@@ -9,9 +9,12 @@ from app.extensions import db
 from werkzeug.middleware.proxy_fix import ProxyFix
 
 CONFIG_LOCATION = os.path.abspath(os.path.dirname(__file__)) + "/stein.json"
+config = None
 
 def create_app():
     """App constructor"""
+
+    global config
 
     app = flask.Flask(__name__)
     CORS(app) # needed for swagger
@@ -45,5 +48,7 @@ def create_app():
                 t.name = "stein-debugger"
                 t.color = "#69420a"
                 dbh.create(t)
+
+        config = app.config
 
     return app

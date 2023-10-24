@@ -5,4 +5,5 @@ export interface PostInterface {
     location_lat: number;
     location_lon: number;
     distance: number;
+    rating: number;
 }

@@ -8,6 +8,7 @@
 
   <div class="image">
     <p-image [src]="api + post.images.slice(-1)[0].url" alt="alt text in current version not supported" width="100%" [preview]="true"></p-image>
+    <p-rating [(ngModel)]="post.rating" [cancel]="false" [readonly]="true"></p-rating>
   </div>
 
   <div class="creator">

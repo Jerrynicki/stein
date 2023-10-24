@@ -61,6 +61,7 @@ export class PostBigComponent {
         error: (error) => {},
         complete: () => {
           this.postCompleted = true;
+          this.post.rating = this.calcRating(this.post.rating)
         },
       });
   }
@@ -118,5 +119,10 @@ export class PostBigComponent {
     } else {
       return (meters / 1000).toFixed(1) + 'km';
     }
+  }
+
+  calcRating(rating: number) : number{
+    let roundedRating = Math.round(rating)
+    return roundedRating
   }
 }

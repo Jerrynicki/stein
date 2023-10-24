@@ -11,13 +11,16 @@ TOKEN_EXPIRY = 30 * 24 * 3600 # 30 days
 
 def user_from_request(request: flask.Request) -> models.user.User:
     """Gets the authenticated user from the request's Bearer auth"""
-    
+
     auth_header = request.headers.get("Authorization")
     
     if auth_header is None:
         return None
 
-    key = auth_header.split(" ")[1] # get rid of the Bearer prefix
+    try:
+        key = auth_header.split(" ")[1] # get rid of the Bearer prefix
+    except IndexError:
+        return None
 
     token = dbhelper.get(models.token.Token, models.token.Token.token, key)
     if token is None or token.expiry < time.time():
