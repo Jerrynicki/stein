@@ -44,10 +44,10 @@ export class CreateComponent implements OnInit {
   locationloaded: boolean = false;
   buttonpressed: boolean = false;
   uploadedFile: any;
-  lat: number;
-  manualLat: number;
-  lng: number;
-  manualLng: number;
+  lat: number = 0;
+  manualLat: number = 0;
+  lng: number = 0;
+  manualLng: number = 0;
   b64: string = '';
   id: number = 0;
 

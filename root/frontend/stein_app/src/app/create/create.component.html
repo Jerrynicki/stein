@@ -20,9 +20,9 @@
     <div class="upload">
       <input type="file" accept="image/*" (change)="onUpload($event)">
       <p>Koordinaten manuell eingeben:</p>
-      <p-inputSwitch [(ngModel)]="manualcoords" (onChange)="manualCoords()"></p-inputSwitch>
-      <p-inputNumber [(ngModle)]="manualLat" [disabled]="!manualcoords"></p-inputNumber>
-      <p-inputNumber [(ngModle)]="manualLng" [disabled]="!manualcoords"></p-inputNumber>
+      <p-inputSwitch [(ngModel)]="manualcoords"></p-inputSwitch>
+      <p-inputNumber [(ngModel)]="manualLat" [disabled]="!manualcoords"></p-inputNumber>
+      <p-inputNumber [(ngModel)]="manualLng" [disabled]="!manualcoords"></p-inputNumber>
       <button mat-stroked-button [disabled]="!imageaccept || buttonpressed" (click)="createPost()"> POSTEN </button>
       <div class="loading" *ngIf="loading">
         <mat-progress-spinner
