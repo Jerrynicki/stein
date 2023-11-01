@@ -22,10 +22,11 @@ export class CreateComponent implements OnInit {
     sessionStorage.getItem('login') == 'true'
       ? (this.login = true)
       : (this.login = false);
-    if (!this.manualcoords) {
+    if (!this.manualcoords && !this.locationloaded) {
       this.geolocation.subscribe((position) => {
         this.lat = position.coords.latitude;
         this.lng = position.coords.longitude;
+        this.locationloaded = true;
       });
     }
   }
@@ -39,11 +40,14 @@ export class CreateComponent implements OnInit {
   login: boolean = false;
   loading: boolean = false;
   imageaccept: boolean = false;
-  manualcoords: boolean =false;
+  manualcoords: boolean = false;
+  locationloaded: boolean = false;
   buttonpressed: boolean = false;
   uploadedFile: any;
-  lat: number | string = 0;
-  lng: number | string = 0;
+  lat: number;
+  manualLat: number;
+  lng: number;
+  manualLng: number;
   b64: string = '';
   id: number = 0;
 
@@ -89,9 +93,9 @@ export class CreateComponent implements OnInit {
     this.loading = true
     const b64formatted = this.b64.split(',')[1];
     console.log(b64formatted);
-    if (typeof this.lat === 'string' && typeof this.lng === 'string') {
-      this.lat = parseInt(this.lat, 10)
-      this.lng = parseInt(this.lng, 10)
+    if (this.manualcoords) {
+      this.lat = this.manualLat;
+      this.lng = this.manualLng;
     }
     this.http
       .post<{id: number}>(
@@ -124,7 +128,7 @@ export class CreateComponent implements OnInit {
       });
   }
 
-  manualCoords(){
+  /* manualCoords(){
     if (this.manualcoords) {
       this.lat = 0
       this.lng = 0
@@ -134,5 +138,5 @@ export class CreateComponent implements OnInit {
         this.lng = position.coords.longitude;
       });
     }
-  }
+  } */
 }

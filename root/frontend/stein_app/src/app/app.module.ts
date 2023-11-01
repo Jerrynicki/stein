@@ -25,6 +25,7 @@ import { CommentComponent } from './comment/comment.component';
 
 import { DividerModule } from 'primeng/divider';
 import { FileUploadModule } from 'primeng/fileupload';
+import { InputNumberModule } from 'primeng/inputnumber';
 import { ImageModule } from 'primeng/image';
 import { InputTextModule } from 'primeng/inputtext';
 import { RatingModule } from 'primeng/rating';
@@ -77,6 +78,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ImageModule,
     AvatarModule,
     InputSwitchModule,
+    InputNumberModule
   ],
   providers: [],
   bootstrap: [AppComponent],
