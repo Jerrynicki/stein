@@ -1,6 +1,10 @@
 # Stein
 ![funny stone picture](./root/frontend/stein_app/src/assets/funny_stone.jpg)
 
+## Public instance
+
+# [stein.bellgardt.dev](https://stein.bellgardt.dev)
+
 ## Setup (Linux)
 
 ### Prerequisites
