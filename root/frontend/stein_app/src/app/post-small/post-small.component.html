@@ -18,7 +18,7 @@
     />
   </mat-card-content>
 
-  <mat-card-actions *ngIf="(post.author == this.username)  && delete">
+  <mat-card-actions *ngIf="post.author == this.username && delete">
     <button mat-stroked-button color="warn" (click)="deletePost()">
       LÖSCHEN (in current version not supported)
     </button>

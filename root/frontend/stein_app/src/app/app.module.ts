@@ -78,7 +78,7 @@ import { ToolbarComponent } from './toolbar/toolbar.component';
     ImageModule,
     AvatarModule,
     InputSwitchModule,
-    InputNumberModule
+    InputNumberModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

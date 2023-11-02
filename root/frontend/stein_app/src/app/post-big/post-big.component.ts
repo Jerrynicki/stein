@@ -14,7 +14,7 @@ export class PostBigComponent {
   constructor(
     private readonly geolocation: GeolocationService,
     private route: ActivatedRoute,
-    private http: HttpClient
+    private http: HttpClient,
   ) {
     this.route.params.subscribe((params) => (this.id = params['id']));
   }
@@ -33,7 +33,7 @@ export class PostBigComponent {
   commentsCompleted: boolean = false;
   commentCompleted: boolean = false;
   username = sessionStorage.getItem('username');
-  login = sessionStorage.getItem('login')
+  login = sessionStorage.getItem('login');
   api: string = '';
 
   httpOptions = {
@@ -50,10 +50,7 @@ export class PostBigComponent {
 
   async getPost(id: number) {
     this.http
-      .get<PostInterface>(
-        '/api/post?id=' + id,
-        this.httpOptions
-      )
+      .get<PostInterface>('/api/post?id=' + id, this.httpOptions)
       .subscribe({
         next: (response) => {
           if (response != null) {
@@ -63,17 +60,14 @@ export class PostBigComponent {
         error: (error) => {},
         complete: () => {
           this.postCompleted = true;
-          this.post.rating = this.calcRating(this.post.rating)
+          this.post.rating = this.calcRating(this.post.rating);
         },
       });
   }
 
   async getComments(id: number) {
     this.http
-      .get<CommentInterface[]>(
-        '/api/post/comments?id=' + id,
-        this.httpOptions
-      )
+      .get<CommentInterface[]>('/api/post/comments?id=' + id, this.httpOptions)
       .subscribe({
         next: (response) => {
           if (response != null) {
@@ -102,7 +96,7 @@ export class PostBigComponent {
           rating: this.comment.rating,
           comment: this.comment.comment,
         },
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {},
@@ -126,8 +120,8 @@ export class PostBigComponent {
     }
   }
 
-  calcRating(rating: number) : number{
-    let roundedRating = Math.round(rating)
-    return roundedRating
+  calcRating(rating: number): number {
+    let roundedRating = Math.round(rating);
+    return roundedRating;
   }
 }

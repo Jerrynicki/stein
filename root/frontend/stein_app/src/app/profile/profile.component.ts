@@ -10,9 +10,12 @@ import { ProfileInterface } from './profile.interface';
   styleUrls: ['./profile.component.scss'],
 })
 export class ProfileComponent {
-  constructor(private route: ActivatedRoute, private http: HttpClient) {
+  constructor(
+    private route: ActivatedRoute,
+    private http: HttpClient,
+  ) {
     this.route.params.subscribe(
-      (params) => (this.profilename = params['name'])
+      (params) => (this.profilename = params['name']),
     );
   }
 
@@ -38,10 +41,7 @@ export class ProfileComponent {
 
   async getProfile(name: string) {
     this.http
-      .get<ProfileInterface>(
-        '/api/profile?name=' + name,
-        this.httpOptions
-      )
+      .get<ProfileInterface>('/api/profile?name=' + name, this.httpOptions)
       .subscribe({
         next: (response) => {
           if (response != null) {
@@ -60,7 +60,7 @@ export class ProfileComponent {
     this.http
       .get<PostInterface[]>(
         '/api/profile/posts?name=' + name + '&page=' + 0,
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {

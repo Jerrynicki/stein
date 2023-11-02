@@ -52,8 +52,6 @@ export class HomeComponent implements OnInit {
     this.getPosts(this.lat, this.lng, this.page);
   }
 
-  
-
   async getPosts(lat: number, lng: number, page: number) {
     this.http
       .get<PostInterface[]>(
@@ -63,7 +61,7 @@ export class HomeComponent implements OnInit {
           lat +
           '&location_lon=' +
           lng,
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {

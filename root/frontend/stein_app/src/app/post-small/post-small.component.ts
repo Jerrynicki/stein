@@ -9,7 +9,10 @@ import { PostInterface } from '../post.interface';
   styleUrls: ['./post-small.component.scss'],
 })
 export class PostSmallComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   @Input() post!: PostInterface;
   @Input() delete!: boolean;

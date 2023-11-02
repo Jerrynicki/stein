@@ -16,7 +16,10 @@ import { TeamInterface } from './team.interface';
   styleUrls: ['./registration.component.scss'],
 })
 export class RegistrationComponent implements OnInit {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   ngOnInit(): void {
     this.http.get<TeamInterface[]>('/api/teams').subscribe({
@@ -63,7 +66,7 @@ export class RegistrationComponent implements OnInit {
           password: this.password,
           team: this.team,
         },
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {
@@ -81,7 +84,7 @@ export class RegistrationComponent implements OnInit {
         },
         complete: () => {
           this.registerstatus = RegisterStatus.Success;
-          sessionStorage.setItem('login', 'true')
+          sessionStorage.setItem('login', 'true');
           this.router.navigate([
             '/profile',
             sessionStorage.getItem('username'),

@@ -11,7 +11,10 @@ import { Router } from '@angular/router';
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent {
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+  ) {}
 
   hide = true;
   color: ThemePalette = 'warn';
@@ -42,7 +45,7 @@ export class LoginComponent {
           username: this.username,
           password: this.password,
         },
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {

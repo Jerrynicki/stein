@@ -12,18 +12,28 @@
     <h1>Stein posten</h1>
     <p>
       Bitte Poste nur STEINE! Etwas anderes zu Posten resultiert in einer
-      Löschung des Posts sowie einem möglichen Bann. 
+      Löschung des Posts sowie einem möglichen Bann.
     </p>
-    <p>
-      Es werden nur Bilder im Querformat akzeptiert.
-    </p>
+    <p>Es werden nur Bilder im Querformat akzeptiert.</p>
     <div class="upload">
-      <input type="file" accept="image/*" (change)="onUpload($event)">
+      <input type="file" accept="image/*" (change)="onUpload($event)" />
       <p>Koordinaten manuell eingeben:</p>
       <p-inputSwitch [(ngModel)]="manualcoords"></p-inputSwitch>
-      <p-inputNumber [(ngModel)]="manualLat" [disabled]="!manualcoords"></p-inputNumber>
-      <p-inputNumber [(ngModel)]="manualLng" [disabled]="!manualcoords"></p-inputNumber>
-      <button mat-stroked-button [disabled]="!imageaccept || buttonpressed" (click)="createPost()"> POSTEN </button>
+      <p-inputNumber
+        [(ngModel)]="manualLat"
+        [disabled]="!manualcoords"
+      ></p-inputNumber>
+      <p-inputNumber
+        [(ngModel)]="manualLng"
+        [disabled]="!manualcoords"
+      ></p-inputNumber>
+      <button
+        mat-stroked-button
+        [disabled]="!imageaccept || buttonpressed"
+        (click)="createPost()"
+      >
+        POSTEN
+      </button>
       <div class="loading" *ngIf="loading">
         <mat-progress-spinner
           [color]="color"

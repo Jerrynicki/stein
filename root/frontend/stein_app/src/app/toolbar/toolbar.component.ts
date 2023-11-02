@@ -13,7 +13,9 @@ export class ToolbarComponent {
   sidebarVisible = false;
 
   ngOnInit() {
-    sessionStorage.getItem('login') == 'true' ? this.login = true : this.login = false;
+    sessionStorage.getItem('login') == 'true'
+      ? (this.login = true)
+      : (this.login = false);
   }
 
   route(destination: string) {

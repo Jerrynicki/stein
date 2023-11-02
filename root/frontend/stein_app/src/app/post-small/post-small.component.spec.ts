@@ -8,7 +8,7 @@ describe('PostSmallComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [PostSmallComponent]
+      declarations: [PostSmallComponent],
     });
     fixture = TestBed.createComponent(PostSmallComponent);
     component = fixture.componentInstance;

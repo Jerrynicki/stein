@@ -15,7 +15,7 @@ export class CreateComponent implements OnInit {
   constructor(
     private readonly geolocation: GeolocationService,
     private http: HttpClient,
-    public router: Router
+    public router: Router,
   ) {}
 
   ngOnInit() {
@@ -89,8 +89,8 @@ export class CreateComponent implements OnInit {
   }
 
   async createPost() {
-    this.buttonpressed = true
-    this.loading = true
+    this.buttonpressed = true;
+    this.loading = true;
     const b64formatted = this.b64.split(',')[1];
     console.log(b64formatted);
     if (this.manualcoords) {
@@ -98,18 +98,18 @@ export class CreateComponent implements OnInit {
       this.lng = this.manualLng;
     }
     this.http
-      .post<{id: number}>(
+      .post<{ id: number }>(
         '/api/post',
         {
           location_lat: this.lat,
           location_lon: this.lng,
           image: b64formatted,
         },
-        this.httpOptions
+        this.httpOptions,
       )
       .subscribe({
         next: (response) => {
-          this.id = response.id
+          this.id = response.id;
         },
         error: (error) => {
           console.error(error);
@@ -118,12 +118,9 @@ export class CreateComponent implements OnInit {
           }
         },
         complete: () => {
-          this.buttonpressed = false
-          this.loading = false
-          this.router.navigate([
-            '/post',
-            this.id,
-          ]);
+          this.buttonpressed = false;
+          this.loading = false;
+          this.router.navigate(['/post', this.id]);
         },
       });
   }

@@ -1,5 +1,5 @@
-export interface TeamInterface{
-    id: number;
-    name: string;
-    color: string;
+export interface TeamInterface {
+  id: number;
+  name: string;
+  color: string;
 }
