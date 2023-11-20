@@ -1,0 +1,11 @@
+venv
+src/run_debug.sh
+src/run_debug.bat
+__pycache__/*
+api/__pycache__/*
+dbh/__pycache__/*
+main/__pycache__/*
+models/__pycache__/*
+static
+templates
+util/__pycache__/*

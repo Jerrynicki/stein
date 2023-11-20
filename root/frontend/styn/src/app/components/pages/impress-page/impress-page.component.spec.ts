@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ImpressumPageComponent } from './impressum-page.component';
+import { ImpressPageComponent } from './impress-page.component';
 
-describe('ImpressumPageComponent', () => {
-  let component: ImpressumPageComponent;
-  let fixture: ComponentFixture<ImpressumPageComponent>;
+describe('ImpressPageComponent', () => {
+  let component: ImpressPageComponent;
+  let fixture: ComponentFixture<ImpressPageComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ImpressumPageComponent]
+      imports: [ImpressPageComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ImpressumPageComponent);
+    fixture = TestBed.createComponent(ImpressPageComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
