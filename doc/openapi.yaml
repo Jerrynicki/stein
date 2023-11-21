@@ -14,22 +14,22 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-- url: http://localhost:5000/api
+  - url: http://localhost:8000/api
 security:
-- bearerAuth: []
+  - bearerAuth: []
 paths:
   "/profile":
     get:
       tags:
-      - Profile
+        - Profile
       summary: Get a profile for the given username
       parameters:
-      - name: name
-        in: query
-        schema:
-          type: string
+        - name: name
+          in: query
+          schema:
+            type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -48,25 +48,25 @@ paths:
                   team:
                     type: number
                     description: The team id the user is in
-        '404':
+        "404":
           description: Not Found
   "/profile/posts":
     get:
       tags:
-      - Profile
+        - Profile
       summary: Get a profile's post history
       parameters:
-      - name: name
-        in: query
-        schema:
-          type: string
-      - name: page
-        description: Starting at 0
-        in: query
-        schema:
-          type: number
+        - name: name
+          in: query
+          schema:
+            type: string
+        - name: page
+          description: Starting at 0
+          in: query
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -95,27 +95,27 @@ paths:
                       type: number
                     rating:
                       type: number
-        '404':
+        "404":
           description: Not Found
   "/posts":
     get:
       summary: Get the user's recommended posts (location-based)
       parameters:
-      - name: page
-        in: query
-        description: Starting at 0
-        schema:
-          type: number
-      - name: location_lat
-        in: query
-        schema:
-          type: number
-      - name: location_lon
-        in: query
-        schema:
-          type: number
+        - name: page
+          in: query
+          description: Starting at 0
+          schema:
+            type: number
+        - name: location_lat
+          in: query
+          schema:
+            type: number
+        - name: location_lon
+          in: query
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -154,7 +154,7 @@ paths:
   "/post":
     post:
       tags:
-      - Post
+        - Post
       summary: Submit a post
       requestBody:
         content:
@@ -170,38 +170,38 @@ paths:
                   type: string
                   description: A base64 encoded image
       responses:
-        '200':
+        "200":
           description: OK
-        '401':
+        "401":
           description: Unauthorized
     delete:
       tags:
-      - Post
+        - Post
       summary: Delete a post
       parameters:
-      - name: id
-        in: query
-        description: Post id
-        schema:
-          type: number
+        - name: id
+          in: query
+          description: Post id
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: Post deleted
-        '401':
+        "401":
           description: Not your post / not an admin
-        '404':
+        "404":
           description: Post not found
     get:
       tags:
-      - Post
+        - Post
       summary: Get a post by id
       parameters:
-      - name: id
-        in: query
-        schema:
-          type: number
+        - name: id
+          in: query
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -232,22 +232,22 @@ paths:
                     type: number
                   rating:
                     type: number
-        '404':
+        "404":
           description: Not Found
   "/post/comments":
     get:
       tags:
-      - Post
-      - Comments
+        - Post
+        - Comments
       summary: Get a post's comments
       parameters:
-      - name: id
-        in: query
-        description: Post id
-        schema:
-          type: number
+        - name: id
+          in: query
+          description: Post id
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -271,18 +271,18 @@ paths:
                     rating:
                       type: number
                       description: The comment's rating from 1-5 stars
-        '404':
+        "404":
           description: Post not found
     post:
       tags:
-      - Comments
+        - Comments
       summary: Post a comment
       parameters:
-      - name: id
-        in: query
-        description: Post id
-        schema:
-          type: number
+        - name: id
+          in: query
+          description: Post id
+          schema:
+            type: number
       requestBody:
         content:
           application/json:
@@ -299,7 +299,7 @@ paths:
                   type: string
                   description: 3 emojis
       responses:
-        '200':
+        "200":
           description: OK, comment posted
           content:
             application/json:
@@ -309,20 +309,20 @@ paths:
                   id:
                     type: number
                     description: The posted comment's id in relation to the post id
-        '409':
+        "409":
           description: You've already posted a comment
-        '404':
+        "404":
           description: Post not found
     put:
       tags:
-      - Comments
+        - Comments
       summary: Update a comment
       parameters:
-      - name: id
-        in: query
-        description: Post id
-        schema:
-          type: number
+        - name: id
+          in: query
+          description: Post id
+          schema:
+            type: number
       requestBody:
         content:
           application/json:
@@ -338,7 +338,7 @@ paths:
                   type: string
                   description: 3 emojis
       responses:
-        '200':
+        "200":
           description: OK, comment posted
           content:
             application/json:
@@ -348,36 +348,36 @@ paths:
                   id:
                     type: number
                     description: The posted comment's id in relation to the post id
-        '401':
+        "401":
           description: Not your comment / not an admin
-        '404':
+        "404":
           description: Post / comment not found
     delete:
       tags:
-      - Comments
+        - Comments
       summary: Delete a comment
       parameters:
-      - name: id
-        in: query
-        description: Post id
-        schema:
-          type: number
-      - name: comment_id
-        in: query
-        description: comment id
-        schema:
-          type: number
+        - name: id
+          in: query
+          description: Post id
+          schema:
+            type: number
+        - name: comment_id
+          in: query
+          description: comment id
+          schema:
+            type: number
       responses:
-        '200':
+        "200":
           description: Comment deleted
-        '401':
+        "401":
           description: Not your comment / not an admin
-        '404':
+        "404":
           description: Post / comment not found
   "/login":
     post:
       tags:
-      - Authorisation
+        - Authorisation
       summary: Log in with credentials
       requestBody:
         content:
@@ -390,7 +390,7 @@ paths:
                 password:
                   type: string
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -402,12 +402,12 @@ paths:
                   expiry:
                     type: number
                     description: Token expiration timestamp (UNIX seconds)
-        '403':
+        "403":
           description: Wrong password or username
   "/register":
     post:
       tags:
-      - Authorisation
+        - Authorisation
       summary: Register new account
       requestBody:
         content:
@@ -421,7 +421,7 @@ paths:
                   type: number
                   description: the user's chosen team's id
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:
@@ -435,15 +435,15 @@ paths:
                   expiry:
                     type: number
                     description: Token expiration timestamp (UNIX seconds)
-        '429':
+        "429":
           description: Too Many Requests
   "/teams":
     get:
       tags:
-      - Teams
+        - Teams
       summary: Get the available Teams and their styling
       responses:
-        '200':
+        "200":
           description: OK
           content:
             application/json:

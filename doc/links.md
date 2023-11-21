@@ -12,3 +12,18 @@ https://docs.sqlalchemy.org/en/20/core/type_basics.html
 
 https://docs.sqlalchemy.org/en/20/core/metadata.html#sqlalchemy.schema.Column
 
+## Swagger Editor
+
+https://editor-next.swagger.io/
+
+## Angular
+
+https://angular.dev
+
+## Frontend Libraries
+
+https://material.angular.io/
+
+https://primeng.org/
+
+https://ionicframework.com/
