@@ -1,58 +1,66 @@
-# Stein
-![funny stone picture](./root/frontend/stein_app/src/assets/funny_stone.jpg)
+# Styn
 
-## Public instance
+Styn is a small student project. From 4 computer science students in Germany.
 
-# [stein.bellgardt.dev](https://stein.bellgardt.dev)
+People can upload Stones to an Instagram-like feed. Where they can comment and rate others Stones.
 
-## Setup (Linux)
+## Installation
 
-### Prerequisites
+To run Styn locally on your machine Docker needs to be installed and running.
 
-- Node >= v16
+Build the Docker-Image:
 
-- NPM
+```bash
+docker build -t styn:latest .
+```
 
-- Python3
+Run the Docker-Container with Port-Mapping:
 
-- Python3-venv
+```bash
+docker run --name styn -p 8000:8000 styn:latest
+```
 
-- a nice stone nearby 🪨
+Styn is now accessible under `localhost:8000`
 
-### Using the install script
-- Use the provided `root/setup.sh` script.
+To keep the Database persistent mount a volume for `/app/instance` e.g.:
 
-Try these steps if it doesn't work:
+```bash
+docker run --name styn -v styn-db:/app/instance -p 8000:8000 styn:latest
+```
 
-### Frontend
+By default, the Container will log to your terminal
 
-- `npm install -g @angular/cli`
+To run the Container in the background detach the container:
 
-- In root/frontend/stein_app:
+```bash
+docker run -d --name styn -v styn-db:/app/instance -p 8000:8000 styn:latest
+```
 
-    - `npm install`
+Styn will now run in the background
 
-    - `ng build`
+To stop and delete the Container:
 
-### Backend
+```bash
+docker stop styn
+docker rm styn
+```
 
-- `python3 -m venv .`
+## Usage
 
-- `source bin/activate`
+To use the API send requests to `/api/`.
 
-- `pip3 install -r requirements.txt`
+For available endpoints check our [OpenAPI](/doc/openapi.yaml) file.
 
-Either run the module `app:create_app()` using a WSGI server, or
+## Public Instance
 
-use the `run_debug.sh` script in `root/backend/src/flask_app` to use the flask debug server
+A public instance can be found on [stein.bellgardt.dev](https://stein.bellgardt.dev).
 
-- Make sure that you've activated the virtual environment before starting.
+## Contribution
 
-    (in root/backend)
-    ```bash
-    source bin/activate
-    cd src/flask_app
-    ./run_debug.sh
-    ```
+As this is a study project which will be assessed later, no contributions are currently accepted.
 
-If the frontend was built succcessfully, it should work automatically
+## License
+
+No license chosen yet.
+
+Please do not distribute or modify the Code without our permission.
