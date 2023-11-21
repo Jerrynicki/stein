@@ -1,7 +1,7 @@
 ---
 openapi: 3.0.3
 info:
-  title: Stein
+  title: Styn
   description: hey check out this cool rock i found
   termsOfService: http://swagger.io/terms/
   contact:

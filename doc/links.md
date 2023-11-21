@@ -20,6 +20,8 @@ https://editor-next.swagger.io/
 
 https://angular.dev
 
+https://angular.io/
+
 ## Frontend Libraries
 
 https://material.angular.io/
